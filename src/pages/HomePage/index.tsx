@@ -1,23 +1,39 @@
 import React from 'react';
-import Apartment from 'components/Apartment';
+import Card from 'components/Card';
 import NavBar from 'components/NavBar';
-import { ApartmentsWrapper, Wrapper } from './styles';
+import { Wrapper, Header } from './styles';
 import { useQuery } from '@apollo/client';
-import { GET_ALL_APARTMENTS } from 'global-constants';
+import { GET_ALL_OFFERS } from 'global-constants';
 import { CircleLoader } from 'react-spinners';
+import handleError from 'helpers/handleError';
 
 const HomePage = () => {
-  const { loading, error, data } = useQuery(GET_ALL_APARTMENTS);
+  const { loading, error, data } = useQuery(GET_ALL_OFFERS);
   if (loading) return <CircleLoader css={'margin: 200px auto;'} size={150} />;
-  if (error) return <span>The server is offline</span>;
+  if (error) handleError(error);
   return (
     <Wrapper>
       <NavBar />
-      <ApartmentsWrapper>
+      <Header>Apartments</Header>
+      <ul>
         {data.getAllApartments.map((apartment: any) => (
-          <Apartment apartment={apartment} />
+          <li>
+            <Card name={apartment.name} image={apartment.image}>
+              {apartment.description}
+            </Card>
+          </li>
         ))}
-      </ApartmentsWrapper>
+      </ul>
+      <Header>Vouchers</Header>
+      <ul>
+        {data.getAllVouchers.map((voucher: any) => (
+          <li>
+            <Card name={voucher.name} image={voucher.image}>
+              {voucher.description}
+            </Card>
+          </li>
+        ))}
+      </ul>
     </Wrapper>
   );
 };

@@ -46,8 +46,8 @@ const Register: React.FC<PropsType> = ({ authFormState, onInputChangeHandler, on
 
 export default Register;
 
-type PropsType = {
+interface PropsType {
   authFormState: any;
   onSubmit: (user: any) => void;
   onInputChangeHandler: (event: React.ChangeEvent<any>) => void;
-};
+}

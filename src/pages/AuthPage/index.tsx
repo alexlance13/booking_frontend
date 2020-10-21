@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import NavBar from 'components/NavBar';
 import { Wrapper } from './styles';
 import Register from 'components/Auth/Register';
@@ -10,9 +10,17 @@ import { useMutation, useLazyQuery } from '@apollo/client';
 import { REGISTER_USER, LOGIN_USER } from 'global-constants';
 import handleError from 'helpers/handleError';
 
-const AuthPage: React.FC<PropsType> = ({ authFormState, setStateFromInputs, isLoading, loginUser, history }) => {
+const AuthPage: React.FC<PropsType> = ({ setStateFromInputs, loginUser, history }) => {
   const [registerSubmit, resultOfRegistration] = useMutation(REGISTER_USER, { onError: handleError });
   const [logInSubmit, resultOfLogingIn] = useLazyQuery(LOGIN_USER, { onError: handleError });
+  const [authFormState, setAuthFormState] = useState({
+    first_name: '',
+    last_name: '',
+    password: '',
+    passwordConfirm: '',
+    email: '',
+    role: '',
+  });
 
   useEffect(() => {
     const userObject = resultOfLogingIn?.data?.loginUser || resultOfRegistration?.data?.createUser;
@@ -25,58 +33,61 @@ const AuthPage: React.FC<PropsType> = ({ authFormState, setStateFromInputs, isLo
   }, [history, loginUser, resultOfLogingIn?.data?.loginUser, resultOfRegistration?.data?.createUser]);
 
   const onInputChangeHandler = (event: React.ChangeEvent<any>) => {
-    setStateFromInputs(event.target.id, event.target.value);
+    event.persist();
+    setAuthFormState((prevState: any) => ({ ...prevState, [event.target.id]: event.target.value }));
   };
 
-  const onRegister = (user: any) => {
-    delete user['passwordConfirm'];
-    try {
-      registerSubmit({ variables: { user } });
-    } catch (e) {
-      console.error(e);
-      handleError(e);
+  const onRegister = useCallback(
+    (user: any) => {
+      delete user['passwordConfirm'];
+      try {
+        registerSubmit({ variables: { user } });
+      } catch (e) {
+        console.error(e);
+        handleError(e);
+      }
+    },
+    [registerSubmit]
+  );
+
+  const onLogin = useCallback(
+    (user: any) => {
+      try {
+        logInSubmit({ variables: { email: user.email, password: user.password } });
+      } catch (e) {
+        console.error(e);
+        handleError(e);
+      }
+    },
+    [logInSubmit]
+  );
+
+  let AuthComponent = useMemo(() => {
+    switch (window.location.pathname) {
+      case '/auth/login':
+        return <Login onInputChangeHandler={onInputChangeHandler} authFormState={authFormState} onSubmit={onLogin} />;
+      case '/auth/register':
+        return <Register onInputChangeHandler={onInputChangeHandler} authFormState={authFormState} onSubmit={onRegister} />;
+      default:
+        history.push('/');
     }
-  };
-
-  const onLogin = (user: any) => {
-    try {
-      logInSubmit({ variables: { email: user.email, password: user.password } });
-    } catch (e) {
-      console.error(e);
-      handleError(e);
-    }
-  };
-
-  let AuthComponent;
-  useMemo(() => {
-  switch (window.location.pathname) {
-    case '/auth/login':
-      AuthComponent = <Login onInputChangeHandler={onInputChangeHandler} authFormState={authFormState} onSubmit={onLogin} />;
-      break;
-    case '/auth/register':
-      AuthComponent = (
-        <Register onInputChangeHandler={onInputChangeHandler} authFormState={authFormState} onSubmit={onRegister} />
-      );
-      break;
-    default:
-      history.push('/');
-  }
-  }, [onInputChangeHandler, authFormState, onLogin, onRegister, history]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onInputChangeHandler, authFormState, onLogin, onRegister, history, window.location.pathname]);
 
   return (
     <Wrapper>
       <NavBar />
-      {(isLoading && <CircleLoader css={'margin: 200px auto;'} size={150} />) || AuthComponent}
+      {((resultOfRegistration.loading || resultOfLogingIn.loading) && <CircleLoader css={'margin: 200px auto;'} size={150} />) ||
+        AuthComponent}
     </Wrapper>
   );
 };
 
-function mapStateToProps(state: any) {
-  return {
-    authFormState: state.auth.authFormState,
-    isLoading: state.auth.loading,
-  };
-}
+// function mapStateToProps(state: any) {
+//   return {
+//     authFormState: state.auth.authFormState,
+//   };
+// }
 
 function mapDispatchToProps(dispatch: any) {
   return {
@@ -85,12 +96,10 @@ function mapDispatchToProps(dispatch: any) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AuthPage);
+export default connect(null, mapDispatchToProps)(AuthPage);
 
 interface PropsType {
-  authFormState: any;
   setStateFromInputs: (key: string, value: any) => void;
   loginUser: (token: any, user: any) => void;
-  isLoading: boolean;
   history: any;
 }

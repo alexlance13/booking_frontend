@@ -36,8 +36,8 @@ const Login: React.FC<PropsType> = ({ onInputChangeHandler, onSubmit }) => {
 
 export default Login;
 
-type PropsType = {
+interface PropsType {
   authFormState: any;
   onSubmit: (user: any) => void;
   onInputChangeHandler: (event: React.ChangeEvent<any>) => void;
-};
+}

@@ -8,6 +8,8 @@ const getErrorMessage = (errors: any, fieldName: string) => {
     pattern: 'This field should be a valid email',
     maxLength: 'This field is too long',
     minLength: 'This field is too short',
+    min: 'Too little',
+    max: 'Too much',
     validate: errors[fieldName].message,
   };
   const message: string = errorMessages[errors[fieldName].type] || 'Something went wrong.';
