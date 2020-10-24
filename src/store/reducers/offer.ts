@@ -1,8 +1,8 @@
 import { SET_STATE_WHEN_EDIT } from '../actions/types';
 
 const initialState = {
-  isEdit: false,
   offerFormStore: {
+    _id: '',
     offerType: 'apartment',
     name: '',
     description: '',
@@ -19,8 +19,10 @@ export default function offerReducer(state = initialState, action: any) {
     case SET_STATE_WHEN_EDIT:
       return {
         ...state,
-        isEdit: true,
-        offerFormStore: action.payload.offerFormStore,
+        offerFormStore: {
+          ...state.offerFormStore,
+          ...action.payload.offerFormStore,
+        },
       };
     default:
       return state;

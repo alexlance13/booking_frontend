@@ -1,12 +1,5 @@
-import { SET_STATE_FROM_INPUTS, SET_USER_INFO, LOG_OUT } from '../actions/types';
+import { SET_USER_INFO, LOG_OUT } from '../actions/types';
 import Swal from 'sweetalert2';
-
-export function setStateFromInputs(key: string, value: any) {
-  return {
-    type: SET_STATE_FROM_INPUTS,
-    payload: { key, value },
-  };
-}
 
 export function loginUser(token: any, user: any) {
   localStorage.setItem('token', token);

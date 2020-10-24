@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Wrapper, SubmitDiv, Header, P } from './styles';
 import Fields from './Fields';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Login: React.FC<PropsType> = ({ onInputChangeHandler, onSubmit }) => {
   const { register, handleSubmit, errors } = useForm();
@@ -21,12 +21,12 @@ const Login: React.FC<PropsType> = ({ onInputChangeHandler, onSubmit }) => {
             </div>
           </div>
           <SubmitDiv>
-            <button className='btn waves-effect waves-light' type='submit' name='action'>
+            <button className='btn waves-light' type='submit' name='action'>
               Submit
             </button>
           </SubmitDiv>
           <P>
-            Click <NavLink to='/auth/register'>here</NavLink> to go to the sign up page
+            Click <Link to='/auth/register'>here</Link> to go to the sign up page
           </P>
         </form>
       </div>

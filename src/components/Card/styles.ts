@@ -2,13 +2,15 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   margin: 0 auto 40px auto;
-  border: 1px solid #90a4ae;
+  border: 0.5px solid #90a4ae;
   padding: 15px;
   display: grid;
   grid-template: 1fr / 300px 1fr;
   grid-gap: 25px;
   height: 250px;
-  width: 70%;
+  a:hover {
+    color: #00897b;
+  }
 `;
 
 export const Header = styled.h5`

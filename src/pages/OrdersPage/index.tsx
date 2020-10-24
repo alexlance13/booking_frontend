@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import NavBar from 'components/NavBar';
-import { Wrapper, Header } from './BookingDescription/styles';
+import { Wrapper, Header } from './styles';
 import { connect } from 'react-redux';
 import { useQuery } from '@apollo/client';
 import {
@@ -41,7 +41,6 @@ const OrderPage: React.FC<PropsType> = ({ user }) => {
       <NavBar />
       {user?.role === USER_ROLES.SELLER && <Header>Here you can see your booked apartments and ordered vouchers</Header>}
       {user?.role === USER_ROLES.BUYER && <Header>Here you can see your bookings and orders</Header>}
-      {data?.getUserById && console.log(data.getUserById.apartments, data.getUserById.vouchers)}
       <Orders bookings={bookings} orders={orders} />
     </Wrapper>
   );

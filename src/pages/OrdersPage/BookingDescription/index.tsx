@@ -2,10 +2,9 @@ import { Wrapper } from './styles';
 import React from 'react';
 
 const Booking: React.FC<PropsType> = ({ booking }) => {
-  console.log(booking);
-  const { dateStart, dateEnd, apartment, buyer } = booking;
-  const dateStartString = new Date(+dateStart).toISOString().substr(0, 10);
-  const dateEndString = new Date(+dateEnd).toISOString().substr(0, 10);
+  const { startDate, endDate, apartment, buyer } = booking;
+  const startDateString = new Date(+startDate).toISOString().substr(0, 10);
+  const endDateString = new Date(+endDate).toISOString().substr(0, 10);
   return (
     <Wrapper>
       <div>
@@ -13,8 +12,8 @@ const Booking: React.FC<PropsType> = ({ booking }) => {
         <span>Count of rooms: {apartment.roomsCount}</span>
       </div>
       <div>
-        <span> Check-in: {dateStartString}</span>
-        <span>Check-out: {dateEndString}</span>
+        <span> Check-in: {startDateString}</span>
+        <span>Check-out: {endDateString}</span>
       </div>
       <div>
         <span>Buyer's name:</span>
@@ -34,8 +33,8 @@ export default Booking;
 
 interface PropsType {
   booking: {
-    dateStart: Date;
-    dateEnd: Date;
+    startDate: Date;
+    endDate: Date;
     roomsCount: number;
     apartment: any;
     buyer: any;

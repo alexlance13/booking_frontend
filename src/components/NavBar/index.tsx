@@ -11,36 +11,35 @@ const NavBar: React.FC<PropsType> = ({ logOut, user }) => {
   return (
     <nav>
       <Wrapper className='nav-wrapper'>
-        <NavLink to='/' className='brand-logo'>
+        <NavLink exact to='/' className='brand-logo'>
           Booking
         </NavLink>
         <ul id='nav-mobile' className='right hide-on-med-and-down'>
-          <li>
-            <NavLink exact to='/createOffer'>
-              Create offer
+          <li key='home'>
+            <NavLink exact to='/' className='right hide-on-med-and-down'>
+              Home
             </NavLink>
           </li>
-          <li>
-            <NavLink exact to='/orders'>
-              My orders
-            </NavLink>
+          <li key='orders'>
+            <NavLink to='/orders'>My orders</NavLink>
           </li>
           {user?.role === USER_ROLES.SELLER && (
-            <li>
-              <NavLink exact to='/offers'>
-                My offers
-              </NavLink>
-            </li>
+            <>
+              <li key='offers'>
+                <NavLink to='/offers'>My offers</NavLink>
+              </li>
+              <li key='createOffer'>
+                <NavLink to='/createOffer'>Create offer</NavLink>
+              </li>
+            </>
           )}
           {user?.role === 'ADMIN' && (
-            <li>
-              <NavLink exact to='/admin'>
-                Admin
-              </NavLink>
+            <li key='admin'>
+              <NavLink to='/admin'>Admin</NavLink>
             </li>
           )}
-          {!user._id ? (
-            <li>
+          {!user?._id ? (
+            <li key='auth'>
               {isLoginPage ? (
                 <NavLink onClick={() => setIsLoginPage(!isLoginPage)} to={'/auth/register'}>
                   Sign up
@@ -52,7 +51,7 @@ const NavBar: React.FC<PropsType> = ({ logOut, user }) => {
               )}
             </li>
           ) : (
-            <li>
+            <li key='logout'>
               <NavLink onClick={() => logOut()} exact to='/'>
                 Log out
               </NavLink>

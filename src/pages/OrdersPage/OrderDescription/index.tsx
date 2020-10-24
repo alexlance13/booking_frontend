@@ -1,4 +1,4 @@
-import { Wrapper } from '../BookingDescription/styles';
+import { Wrapper } from './styles';
 import React from 'react';
 
 const Order: React.FC<PropsType> = ({ order }) => {

@@ -10,6 +10,6 @@ export function setStateFromInputs(key: string, value: any) {
 export function setStateWhenEdit(offerFormStore: any) {
   return {
     type: SET_STATE_WHEN_EDIT,
-    payload: offerFormStore,
+    payload: { offerFormStore },
   };
 }

@@ -7,14 +7,14 @@ const Orders: React.FC<PropsType> = ({ bookings, orders }) => {
   return (
     <ul>
       {bookings?.map((booking: any) => (
-        <li>
+        <li key={booking._id}>
           <Card image={booking.apartment.image} name={booking.apartment.name}>
             <BookingDescription booking={booking} />
           </Card>
         </li>
       ))}
       {orders?.map((order: any) => (
-        <li>
+        <li key={order._id}>
           <Card image={order.voucher.image} name={order.voucher.name}>
             <OrderDescription order={order} />
           </Card>

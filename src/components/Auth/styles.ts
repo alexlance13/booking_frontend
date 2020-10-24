@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   margin: 25px auto;
@@ -20,8 +20,8 @@ export const Header = styled.span`
 `;
 
 export const Error = styled.span`
-  font-weight: 400;
-  color: red;
+  font-weight: 400 !important;
+  color: red !important;
 `;
 
 export const SubmitDiv = styled.div`

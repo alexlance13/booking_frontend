@@ -9,6 +9,12 @@ export const Wrapper = styled.div`
   input:-webkit-autofill:active {
     transition: background-color 5000s ease-in-out 0s;
   }
+  textarea {
+    resize: none;
+    max-height: 88px;
+    height: 88px;
+    overflow-y: scroll;
+  }
 `;
 
 export const Header = styled.span`
@@ -17,11 +23,6 @@ export const Header = styled.span`
   display: block;
   padding: 30px;
   text-align: center;
-`;
-
-export const Error = styled.span`
-  font-weight: 400;
-  color: red;
 `;
 
 export const SubmitDiv = styled.div`

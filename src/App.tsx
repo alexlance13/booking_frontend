@@ -1,4 +1,5 @@
 import React from 'react';
+import './App.css';
 import { Switch, BrowserRouter, Redirect, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import AuthPage from './pages/AuthPage';
@@ -6,12 +7,13 @@ import PrivateRoute from 'components/PrivateRoute';
 import OffersPage from 'pages/OffersPage';
 import OrdersPage from 'pages/OrdersPage';
 import { USER_ROLES } from 'global-constants';
-import CreateEditOfferPage from 'pages/CreateEditOfferPage';
+import EditOfferPage from 'pages/EditOfferPage';
+import CreateOfferPage from 'pages/CreateOfferPage';
 import { ApolloProvider } from '@apollo/client';
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-
-console.log(process.env.REACT_APP_API_URL);
+import SingleVoucherPage from 'pages/SingleVoucherPage';
+import SingleApartmentPage from 'pages/SingleApartmentPage';
 
 const httpLink = createHttpLink({
   uri: process.env.REACT_APP_API_URL,
@@ -41,7 +43,10 @@ function App() {
             <Route exact path='/' component={HomePage} />
             <Route path='/auth' component={AuthPage} />
             <Route path='/orders' component={OrdersPage} />
-            <Route path='/createOffer' component={CreateEditOfferPage} />
+            <Route path='/editOffer' component={EditOfferPage} />
+            <Route path='/voucher/:id' component={SingleVoucherPage} />
+            <Route path='/apartment/:id' component={SingleApartmentPage} />
+            <PrivateRoute role={USER_ROLES.SELLER} component={CreateOfferPage} path='/createOffer' />
             <PrivateRoute role={USER_ROLES.SELLER} component={OffersPage} path='/offers' />
             {/* <PrivateRoute role='ADMIN' component={Admin} path='/admin' /> */}
             <Redirect to='/' />

@@ -35,6 +35,7 @@ const OfferForm: React.FC<PropsType> = ({ offerFormState, onInputChangeHandler, 
             />
           </div>
           <Fields.OfferType
+            isEditing={!!isEditing}
             onInputChangeHandler={onInputChangeHandler}
             offerFormState={offerFormState}
             errors={errors}
@@ -58,7 +59,7 @@ const OfferForm: React.FC<PropsType> = ({ offerFormState, onInputChangeHandler, 
               />
               <Fields.Quantity
                 onInputChangeHandler={onInputChangeHandler}
-                offerFormState={offerFormState}
+                quantityValue={offerFormState.quantity}
                 errors={errors}
                 register={register}
               />
@@ -71,7 +72,7 @@ const OfferForm: React.FC<PropsType> = ({ offerFormState, onInputChangeHandler, 
             register={register}
           />
           <SubmitDiv>
-            <button className='btn waves-effect waves-light' type='submit' name='action'>
+            <button className='btn waves-light' type='submit' name='action'>
               Submit
             </button>
           </SubmitDiv>

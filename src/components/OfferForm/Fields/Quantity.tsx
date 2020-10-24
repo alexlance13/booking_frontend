@@ -1,7 +1,7 @@
 import getErrorMessage from 'helpers/getValidationMessage';
 import React from 'react';
 
-const Quantity: React.FC<PropsType> = ({ onInputChangeHandler, errors, register, offerFormState }) => {
+const Quantity: React.FC<PropsType> = ({ onInputChangeHandler, errors, register, quantityValue, availableQuantity }) => {
   return (
     <div className='input-field col s6'>
       <input
@@ -9,12 +9,16 @@ const Quantity: React.FC<PropsType> = ({ onInputChangeHandler, errors, register,
         id='quantity'
         type='number'
         className='validate'
-        value={offerFormState.quantity}
+        value={quantityValue}
         onChange={onInputChangeHandler}
         ref={register({
           required: true,
           min: 1,
           max: 1000,
+          validate: (value: number) => {
+            if (typeof availableQuantity === 'number' && availableQuantity < value) return 'Too much';
+            return true;
+          },
         })}
       />
       {getErrorMessage(errors, 'quantity')}
@@ -28,8 +32,9 @@ const Quantity: React.FC<PropsType> = ({ onInputChangeHandler, errors, register,
 export default Quantity;
 
 interface PropsType {
-  offerFormState: any;
+  quantityValue: number;
   onInputChangeHandler: (event: React.ChangeEvent<any>) => void;
   register: any;
   errors: any;
+  availableQuantity?: number;
 }

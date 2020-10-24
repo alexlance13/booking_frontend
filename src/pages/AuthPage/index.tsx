@@ -3,16 +3,16 @@ import NavBar from 'components/NavBar';
 import { Wrapper } from './styles';
 import Register from 'components/Auth/Register';
 import Login from 'components/Auth/Login';
-import { setStateFromInputs, loginUser } from 'store/actions/auth';
+import { loginUser } from 'store/actions/auth';
 import { connect } from 'react-redux';
 import CircleLoader from 'react-spinners/CircleLoader';
 import { useMutation, useLazyQuery } from '@apollo/client';
 import { REGISTER_USER, LOGIN_USER } from 'global-constants';
 import handleError from 'helpers/handleError';
 
-const AuthPage: React.FC<PropsType> = ({ setStateFromInputs, loginUser, history }) => {
-  const [registerSubmit, resultOfRegistration] = useMutation(REGISTER_USER, { onError: handleError });
-  const [logInSubmit, resultOfLogingIn] = useLazyQuery(LOGIN_USER, { onError: handleError });
+const AuthPage: React.FC<PropsType> = ({ loginUser, history }) => {
+  const [registerSubmit, {loading: registrationLoading, data: registrationData}] = useMutation(REGISTER_USER, { onError: handleError });
+  const [logInSubmit, {loading: loginLoading, data: loginData}] = useLazyQuery(LOGIN_USER, { onError: handleError });
   const [authFormState, setAuthFormState] = useState({
     first_name: '',
     last_name: '',
@@ -23,14 +23,14 @@ const AuthPage: React.FC<PropsType> = ({ setStateFromInputs, loginUser, history 
   });
 
   useEffect(() => {
-    const userObject = resultOfLogingIn?.data?.loginUser || resultOfRegistration?.data?.createUser;
+    const userObject = loginData?.loginUser || registrationData?.createUser;
     if (userObject) {
       const { token, user } = userObject;
       loginUser(token, user);
       history.push('/');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [history, loginUser, resultOfLogingIn?.data?.loginUser, resultOfRegistration?.data?.createUser]);
+  }, [history, loginUser, loginData?.loginUser, registrationData?.createUser]);
 
   const onInputChangeHandler = (event: React.ChangeEvent<any>) => {
     event.persist();
@@ -77,21 +77,14 @@ const AuthPage: React.FC<PropsType> = ({ setStateFromInputs, loginUser, history 
   return (
     <Wrapper>
       <NavBar />
-      {((resultOfRegistration.loading || resultOfLogingIn.loading) && <CircleLoader css={'margin: 200px auto;'} size={150} />) ||
+      {((registrationLoading || loginLoading) && <CircleLoader css={'margin: 200px auto;'} size={150} />) ||
         AuthComponent}
     </Wrapper>
   );
 };
 
-// function mapStateToProps(state: any) {
-//   return {
-//     authFormState: state.auth.authFormState,
-//   };
-// }
-
 function mapDispatchToProps(dispatch: any) {
   return {
-    setStateFromInputs: (key: string, value: any) => dispatch(setStateFromInputs(key, value)),
     loginUser: (token: any, user: any) => dispatch(loginUser(token, user)),
   };
 }

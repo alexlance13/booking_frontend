@@ -10,7 +10,7 @@ const Variant: React.FC<PropsType> = ({ onInputChangeHandler, errors, register, 
         ref={register({ required: true })}
         name='variant'
         id='variant'
-        value={offerFormState.variant}>
+        defaultValue={offerFormState.variant}>
         <option value='' disabled selected>
           Choose your voucher variant
         </option>

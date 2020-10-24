@@ -2,7 +2,7 @@ import React from 'react';
 import { Select } from '../styles';
 import getErrorMessage from 'helpers/getValidationMessage';
 
-const OfferType: React.FC<PropsType> = ({ onInputChangeHandler, errors, register, offerFormState }) => {
+const OfferType: React.FC<PropsType> = ({ onInputChangeHandler, errors, register, offerFormState, isEditing }) => {
   return (
     <div className='input-field'>
       <Select
@@ -10,7 +10,8 @@ const OfferType: React.FC<PropsType> = ({ onInputChangeHandler, errors, register
         ref={register({ required: true })}
         name='offerType'
         id='offerType'
-        value={offerFormState.offerType}>
+        disabled={isEditing}
+        defaultValue={offerFormState.offerType}>
         <option value='' disabled selected>
           Choose your offer type
         </option>
@@ -29,4 +30,5 @@ interface PropsType {
   onInputChangeHandler: (event: React.ChangeEvent<any>) => void;
   register: any;
   errors: any;
+  isEditing: boolean;
 }
