@@ -11,6 +11,7 @@ import {
 import { CircleLoader } from 'react-spinners';
 import handleError from 'helpers/handleError';
 import Orders from 'components/Orders';
+import { IApartment, IBooking, IUser, IVoucher, IOrder } from 'types';
 
 const OrderPage: React.FC<PropsType> = ({ user }) => {
   const query =
@@ -18,10 +19,13 @@ const OrderPage: React.FC<PropsType> = ({ user }) => {
       ? GET_ALL_ORDERS_AND_BOOKINGS_FROM_A_SPECIFIC_SELLER
       : GET_ALL_ORDERS_AND_BOOKINGS_FROM_A_SPECIFIC_BUYER;
   const { loading, error, data } = useQuery(query, { variables: { id: user._id } });
-  const bookings = useMemo(
+  const bookings: IBooking[] = useMemo(
     () =>
       user.role === USER_ROLES.SELLER
-        ? data?.getUserById?.apartments.reduce((prevBookings: any, apartment: any) => prevBookings.concat(apartment.bookings), [])
+        ? data?.getUserById?.apartments.reduce(
+            (prevBookings: IBooking[], apartment: IApartment) => prevBookings.concat(apartment.bookings),
+            []
+          )
         : data?.getUserById?.bookings,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [data?.getUserById?.apartments, data?.getUserById?.bookings]
@@ -29,7 +33,7 @@ const OrderPage: React.FC<PropsType> = ({ user }) => {
   const orders = useMemo(
     () =>
       user.role === USER_ROLES.SELLER
-        ? data?.getUserById?.vouchers.reduce((prevOrders: any, voucher: any) => prevOrders.concat(voucher.orders), [])
+        ? data?.getUserById?.vouchers.reduce((prevOrders: IOrder[], voucher: IVoucher) => prevOrders.concat(voucher.orders), [])
         : data?.getUserById?.orders,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [data?.getUserById?.vouchers, data?.getUserById?.orders]
@@ -55,5 +59,5 @@ function mapStateToProps(state: any) {
 export default connect(mapStateToProps)(OrderPage);
 
 interface PropsType {
-  user: any;
+  user: IUser;
 }

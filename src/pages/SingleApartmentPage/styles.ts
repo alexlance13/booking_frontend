@@ -9,4 +9,11 @@ display: grid;
 grid-template: 1fr / 5fr 1fr ;
 grid-gap: 50px;
 align-items: center;
+@media (max-width: 1000px) {
+    grid-template: 1fr 50px / fit-content(100%);
+    grid-gap: 10px;
+    align-content: center;
+    grid-column: 1 / 3;
+  }
+}
 `;

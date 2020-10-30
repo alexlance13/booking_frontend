@@ -1,5 +1,6 @@
 import { Wrapper } from './styles';
 import React from 'react';
+import { IOrder } from 'types';
 
 const Order: React.FC<PropsType> = ({ order }) => {
   return (
@@ -24,10 +25,5 @@ const Order: React.FC<PropsType> = ({ order }) => {
 export default Order;
 
 interface PropsType {
-  order: {
-    __typename: string;
-    buyer: any;
-    quantity: number;
-    voucher: any;
-  };
+  order: IOrder;
 }

@@ -7,6 +7,10 @@ export const Wrapper = styled.div`
   grid-template: 60px 1fr/ 1fr;
   grid-gap: 25px;
   width: 70%;
+  @media (max-width: 800px) {
+    width: 90%;
+    grid-gap: 5px;
+  }
 `;
 
 export const Header = styled.span`
@@ -15,6 +19,12 @@ export const Header = styled.span`
   display: block;
   text-align: center;
   text-transform: uppercase;
+  @media (max-width: 1000px) {
+    font-size: 24px;
+  }
+  @media (max-width: 480px) {
+    font-size: 20px;
+  }
 `;
 
 export const InfoDiv = styled.div`
@@ -27,6 +37,13 @@ export const InfoDiv = styled.div`
     font-weight: 500;
     color: #00897b;
     align-self: center;
+  }
+  @media (max-width: 800px) {
+    grid-gap: 5px;
+    span {
+      grid-template: 1fr 1fr / 1fr 1fr;
+      font-size: 14px;
+    }
   }
 `;
 
@@ -42,4 +59,9 @@ export const OrderDiv = styled.div`
   display: grid;
   align-items: center;
   grid-template: 1fr / 1fr 1fr 1fr;
+  @media (max-width: 1000px) {
+      grid-template: 25px 1fr / 1fr 1fr;
+      grid-gap: 30px;
+    }
+  }
 `;

@@ -9,14 +9,14 @@ const Quantity: React.FC<PropsType> = ({ onInputChangeHandler, errors, register,
         id='quantity'
         type='number'
         className='validate'
-        value={quantityValue}
+        value={quantityValue || 1}
         onChange={onInputChangeHandler}
         ref={register({
           required: true,
           min: 1,
           max: 1000,
           validate: (value: number) => {
-            if (typeof availableQuantity === 'number' && availableQuantity < value) return 'Too much';
+            if (availableQuantity && typeof availableQuantity === 'number' && availableQuantity < value) return 'Too much';
             return true;
           },
         })}
@@ -32,8 +32,8 @@ const Quantity: React.FC<PropsType> = ({ onInputChangeHandler, errors, register,
 export default Quantity;
 
 interface PropsType {
-  quantityValue: number;
-  onInputChangeHandler: (event: React.ChangeEvent<any>) => void;
+  quantityValue?: number;
+  onInputChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
   register: any;
   errors: any;
   availableQuantity?: number;

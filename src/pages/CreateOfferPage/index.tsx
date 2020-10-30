@@ -10,8 +10,12 @@ import CircleLoader from 'react-spinners/CircleLoader';
 import Swal from 'sweetalert2';
 
 const CreateOfferPage: React.FC<PropsType> = ({ history }) => {
-  const [createApartment, {loading: apartmentLoading, data: apartmentData}] = useMutation(CREATE_NEW_APARTMENT, { onError: handleError });
-  const [createVoucher, {loading: voucherLoading, data: voucherData}] = useMutation(CREATE_NEW_VOUCHER, { onError: handleError });
+  const [createApartment, { loading: apartmentLoading, data: apartmentData }] = useMutation(CREATE_NEW_APARTMENT, {
+    onError: handleError,
+  });
+  const [createVoucher, { loading: voucherLoading, data: voucherData }] = useMutation(CREATE_NEW_VOUCHER, {
+    onError: handleError,
+  });
 
   const [offerFormState, setOfferFormState] = useState<IOfferFormState>({
     offerType: 'apartment',
@@ -36,9 +40,9 @@ const CreateOfferPage: React.FC<PropsType> = ({ history }) => {
     }
   }, [apartmentData, history, voucherData]);
 
-  const onInputChangeHandler = (event: React.ChangeEvent<any>) => {
+  const onInputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.type === 'number' ? +event.target.value : event.target.value;
-    setOfferFormState((prevState: any) => ({ ...prevState, [event.target.id]: value }));
+    setOfferFormState((prevState: IOfferFormState) => ({ ...prevState, [event.target.id]: value }));
     event.persist();
   };
 

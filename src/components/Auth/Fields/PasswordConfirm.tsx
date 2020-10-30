@@ -1,5 +1,6 @@
 import React from 'react';
 import getErrorMessage from 'helpers/getValidationMessage';
+import { IUserForm } from 'types';
 
 const PasswordConfirm: React.FC<PropsType> = ({ onInputChangeHandler, errors, register, authFormState }) => {
   return (
@@ -28,8 +29,8 @@ const PasswordConfirm: React.FC<PropsType> = ({ onInputChangeHandler, errors, re
 export default PasswordConfirm;
 
 interface PropsType {
-  onInputChangeHandler: (event: React.ChangeEvent<any>) => void;
+  onInputChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
   register: any;
   errors: any;
-  authFormState: any;
+  authFormState: IUserForm;
 }

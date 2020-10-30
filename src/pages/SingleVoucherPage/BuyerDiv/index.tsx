@@ -27,8 +27,8 @@ const BuyerDiv: React.FC<PropsType> = ({ onOrderHandler, quantity, onInputChange
 export default BuyerDiv;
 
 interface PropsType {
-  onOrderHandler: any;
-  onInputChangeHandler: any;
+  onOrderHandler: () => void;
+  onInputChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
   quantity: number;
   availableQuantity: number;
 }

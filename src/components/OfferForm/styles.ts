@@ -15,6 +15,9 @@ export const Wrapper = styled.div`
     height: 88px;
     overflow-y: scroll;
   }
+  @media (max-width: 1000px) {
+    width: 80%;
+  }
 `;
 
 export const Header = styled.span`
@@ -23,6 +26,10 @@ export const Header = styled.span`
   display: block;
   padding: 30px;
   text-align: center;
+  @media (max-width: 480px) {
+    font-size: 20px;
+    padding: 10px;
+  }
 `;
 
 export const SubmitDiv = styled.div`

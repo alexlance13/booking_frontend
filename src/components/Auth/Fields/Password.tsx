@@ -23,7 +23,7 @@ const Password: React.FC<PropsType> = ({ onInputChangeHandler, errors, register 
 export default Password;
 
 interface PropsType {
-  onInputChangeHandler: (event: React.ChangeEvent<any>) => void;
+  onInputChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
   register: any;
   errors: any;
 }

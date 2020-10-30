@@ -1,7 +1,8 @@
 import { SET_USER_INFO, LOG_OUT } from '../actions/types';
 import Swal from 'sweetalert2';
+import { IUser } from 'types';
 
-export function loginUser(token: any, user: any) {
+export function loginUser(token: string, user: IUser) {
   localStorage.setItem('token', token);
   localStorage.setItem('user', JSON.stringify(user));
   Swal.fire({

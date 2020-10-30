@@ -7,11 +7,26 @@ export const Wrapper = styled.div`
 `;
 
 export const BodyDiv = styled.div`
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
   display: grid;
   grid-template: 1fr / 1fr 4fr 1fr;
   grid-gap: 20px;
+  justify-items: center;
+  @media (max-width: 1300px) {
+    width: 98%;
+  }
+  @media (max-width: 1167px) {
+    grid-template: 1fr / 1fr 1fr;
+    grid-gap: 0;
+    & > button:first-child {
+      margin: 20px auto;
+      grid-column: 1 / 3;
+    }
+  }
+  @media (max-width: 480px) {
+    grid-template: 1fr / 200px 1fr;
+  }
 `;
 
 export const Header = styled.span`
@@ -19,6 +34,9 @@ export const Header = styled.span`
   font-size: 26px;
   display: block;
   padding: 40px;
+  @media (max-width: 1167px) {
+    padding: 20px;
+  }
   text-align: center;
 `;
 export const SearchParams = styled.span`
@@ -27,6 +45,9 @@ export const SearchParams = styled.span`
   display: block;
   padding: 20px;
   text-align: center;
+  @media (max-width: 800px) {
+    padding: 20px 0;
+  }
 `;
 
 export const StyledLink = styled(Link)`
@@ -37,4 +58,11 @@ export const StyledLink = styled(Link)`
       box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.5);
     }
   }
+`;
+
+export const Select = styled.select`
+  background-color: inherit;
+  display: block;
+  border-bottom: 1px solid #26a69a;
+  margin-bottom: 20px;
 `;

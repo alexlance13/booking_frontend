@@ -44,7 +44,7 @@ const EditOfferPage: React.FC<PropsType> = ({ offerFormStore, history }) => {
     }
   }, [history, resultOfEditingApartment, resultOfEditingVoucher]);
 
-  const onInputChangeHandler = (event: React.ChangeEvent<any>) => {
+  const onInputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.type === 'number' ? +event.target.value : event.target.value;
     setOfferFormState((prevState: any) => ({ ...prevState, [event.target.id]: value }));
     event.persist();
@@ -53,15 +53,18 @@ const EditOfferPage: React.FC<PropsType> = ({ offerFormStore, history }) => {
   const onSubmit = () => {
     const id = offerFormState._id;
     let offerFormStateMap = Object.entries(offerFormState);
-    offerFormStateMap = offerFormStateMap.filter((field: any) => field[1] !== '' || field[1] !== offerFormStore[field[0]]); // remove not updated or empty fields
+    offerFormStateMap = offerFormStateMap.filter(
+      // @ts-ignore
+      ([key, value]: [string, string]) => value !== '' || value !== offerFormStore[key]
+    ); // remove not updated or empty fields
     if (offerFormState.offerType === OFFER_TYPES.APARTMENT) {
       const apartment = Object.fromEntries(
-        offerFormStateMap.filter((field: any) => !['quantity', 'variant', 'offerType', '_id'].includes(field[0]))
+        offerFormStateMap.filter(([key, _]) => !['quantity', 'variant', 'offerType', '_id'].includes(key))
       );
       editApartment({ variables: { apartment, id } });
     } else if (offerFormState.offerType === OFFER_TYPES.VOUCHER) {
       const voucher = Object.fromEntries(
-        offerFormStateMap.filter((field: any) => !['roomsCount', 'offerType', '_id'].includes(field[0]))
+        offerFormStateMap.filter(([key, _]) => !['roomsCount', 'offerType', '_id'].includes(key))
       );
       editVoucher({ variables: { voucher, id } });
     }
@@ -93,7 +96,6 @@ function mapStateToProps(state: any) {
 export default connect(mapStateToProps)(EditOfferPage);
 
 interface PropsType {
-  offerFormStore: any;
-  setStateFromInputs: (key: string, value: any) => void;
+  offerFormStore: IOfferFormStateForEdit;
   history: any;
 }

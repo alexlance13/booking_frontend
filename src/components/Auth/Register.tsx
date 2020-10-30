@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Wrapper, SubmitDiv, Header, P } from './styles';
 import Fields from './Fields';
 import { Link } from 'react-router-dom';
+import { IUserForm } from 'types';
 
 const Register: React.FC<PropsType> = ({ authFormState, onInputChangeHandler, onSubmit }) => {
   const { register, handleSubmit, errors } = useForm();
@@ -47,7 +48,7 @@ const Register: React.FC<PropsType> = ({ authFormState, onInputChangeHandler, on
 export default Register;
 
 interface PropsType {
-  authFormState: any;
-  onSubmit: (user: any) => void;
-  onInputChangeHandler: (event: React.ChangeEvent<any>) => void;
+  authFormState: IUserForm;
+  onSubmit: (user: IUserForm) => void;
+  onInputChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }

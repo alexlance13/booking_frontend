@@ -1,6 +1,7 @@
 import React from 'react';
 import { Select } from '../styles';
 import getErrorMessage from 'helpers/getValidationMessage';
+import { IOfferFormState, IOfferFormStateForEdit } from 'types';
 
 const OfferType: React.FC<PropsType> = ({ onInputChangeHandler, errors, register, offerFormState, isEditing }) => {
   return (
@@ -26,8 +27,8 @@ const OfferType: React.FC<PropsType> = ({ onInputChangeHandler, errors, register
 export default OfferType;
 
 interface PropsType {
-  offerFormState: any;
-  onInputChangeHandler: (event: React.ChangeEvent<any>) => void;
+  offerFormState: IOfferFormState | IOfferFormStateForEdit;
+  onInputChangeHandler: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   register: any;
   errors: any;
   isEditing: boolean;

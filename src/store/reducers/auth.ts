@@ -1,3 +1,4 @@
+import { IAuthState } from 'types';
 import { SET_USER_INFO, LOG_OUT } from '../actions/types';
 
 let token: any = localStorage.getItem('token');
@@ -9,7 +10,7 @@ try {
   user = {};
 }
 
-const initialState = {
+const initialState: IAuthState = {
   token,
   user,
 };

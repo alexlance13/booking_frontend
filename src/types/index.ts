@@ -24,21 +24,85 @@ export interface IOfferTypes {
   VOUCHER: 'voucher';
 }
 export interface IVoucherVariantTypes {
-  RESTAURANT: 'restaurant';
-  CLUB: 'club';
-  MUSEUM: 'museum';
-  CINEMA: 'cinema';
+  RESTAURANT: 'RESTAURANT';
+  CLUB: 'CLUB';
+  MUSEUM: 'MUSEUM';
+  CINEMA: 'CINEMA';
 }
 export interface IRange {
   startDate: Date;
   endDate: Date;
 }
+export interface IBooking {
+  apartment: IApartment;
+  buyer: IUser;
+  startDate: Date;
+  endDate: Date;
+}
+export interface IOrder {
+  voucher: IVoucher;
+  quantity: number;
+  price: number;
+  buyer: IUser;
+}
 export interface ISearchParams {
   type: string;
-  priceF: string;
-  priceT: string;
+  priceFrom: string;
+  priceTo: string;
   variant: string;
-  rooms: string;
-  startDate: string;
-  endDate: string;
+  rooms: string | number;
+  startDate: string | Date;
+  endDate: string | Date;
+  sortByPrice: string;
+  availableDates: string;
+  sortByRooms: string;
 }
+
+export interface IVoucher {
+  _id: string;
+  name: string;
+  description: string;
+  image: string;
+  price: number;
+  variant: IVoucherVariantTypes;
+  quantity: number;
+  seller: IUser;
+  orders: IOrder[];
+}
+export interface IApartment {
+  __types: 'Apartment';
+  _id: string;
+  name: string;
+  description: string;
+  image: string;
+  price: number;
+  roomsCount: number;
+  seller: IUser;
+  bookings: IBooking[];
+}
+export interface IAuthState {
+  token: string;
+  user: IUser;
+}
+
+export interface IUser {
+  __typename: 'User';
+  _id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  role: string;
+}
+export interface IUserForm {
+  first_name: string;
+  last_name: string;
+  password: string;
+  passwordConfirm?: string;
+  email: string;
+  role: string;
+}
+export interface IRelatedParams {
+  voucher: string[];
+  apartment: string[];
+}
+export type Entity = 'apartments' | 'vouchers';

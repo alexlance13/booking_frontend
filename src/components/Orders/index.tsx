@@ -2,6 +2,7 @@ import Card from 'components/Card';
 import BookingDescription from 'pages/OrdersPage/BookingDescription';
 import OrderDescription from 'pages/OrdersPage/OrderDescription';
 import React from 'react';
+import { IBooking, IOrder } from 'types';
 
 const Orders: React.FC<PropsType> = ({ bookings, orders }) => {
   return (
@@ -27,6 +28,6 @@ const Orders: React.FC<PropsType> = ({ bookings, orders }) => {
 export default Orders;
 
 interface PropsType {
-  bookings: any[];
-  orders: any[];
+  bookings: IBooking[];
+  orders: IOrder[];
 }

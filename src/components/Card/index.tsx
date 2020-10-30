@@ -5,7 +5,7 @@ const Card: React.FC<PropsType> = ({ image, name, children }) => {
   return (
     <Wrapper>
       <ImageDiv>
-        <img src={image} alt={name} width='300' height='200' />
+        <img src={image} alt={name} />
       </ImageDiv>
       <InfoDiv>
         <Header>{name}</Header>

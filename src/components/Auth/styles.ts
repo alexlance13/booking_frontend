@@ -9,6 +9,9 @@ export const Wrapper = styled.div`
   input:-webkit-autofill:active {
     transition: background-color 5000s ease-in-out 0s;
   }
+  @media (max-width: 800px) {
+    width: 90%;
+  }
 `;
 
 export const Header = styled.span`

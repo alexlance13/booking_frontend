@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import { setStateWhenEdit } from 'store/actions/offer';
 import Swal from 'sweetalert2';
 import BuyerDiv from './BuyerDiv';
+import { IOfferFormStateForEdit, IUser } from 'types';
 
 const SingleVoucherPage: React.FC<PropsType> = ({ user, history, setStateWhenEdit }) => {
   const [id] = useState(window.location.pathname.substr(window.location.pathname.lastIndexOf('/') + 1));
@@ -36,8 +37,9 @@ const SingleVoucherPage: React.FC<PropsType> = ({ user, history, setStateWhenEdi
     }
   }, [history, mutationData]);
 
-  const onInputChangeHandler = (event: React.ChangeEvent<any>) => {
-    setQuantity(+event.target.value);
+  const onInputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value === '') setQuantity(1);
+    else if (Number(event.target.value)) setQuantity(+event.target.value);
   };
 
   const onOrderHandler = () => {
@@ -95,14 +97,14 @@ function mapStateToProps(state: any) {
 
 function mapDispatchToProps(dispatch: any) {
   return {
-    setStateWhenEdit: (offerForStore: any) => dispatch(setStateWhenEdit(offerForStore)),
+    setStateWhenEdit: (offerForStore: IOfferFormStateForEdit) => dispatch(setStateWhenEdit(offerForStore)),
   };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleVoucherPage);
 
 interface PropsType {
-  user: any;
+  user: IUser;
   history: any;
-  setStateWhenEdit: (offerForStore: any) => void;
+  setStateWhenEdit: (offerForStore: IOfferFormStateForEdit) => void;
 }

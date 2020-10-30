@@ -39,7 +39,7 @@ const NameInputs: React.FC<PropsType> = ({ onInputChangeHandler, errors, registe
 export default NameInputs;
 
 interface PropsType {
-  onInputChangeHandler: (event: React.ChangeEvent<any>) => void;
+  onInputChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
   register: any;
   errors: any;
 }

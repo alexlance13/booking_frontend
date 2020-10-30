@@ -14,10 +14,3 @@ function mapStateToProps(state: any) {
 }
 
 export default connect(mapStateToProps)(PrivateRoute);
-
-interface PropsType {
-  component: any;
-  role: any;
-  user: any;
-  rest: any;
-}

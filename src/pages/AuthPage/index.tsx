@@ -9,11 +9,14 @@ import CircleLoader from 'react-spinners/CircleLoader';
 import { useMutation, useLazyQuery } from '@apollo/client';
 import { REGISTER_USER, LOGIN_USER } from 'global-constants';
 import handleError from 'helpers/handleError';
+import { IUser, IUserForm } from 'types';
 
 const AuthPage: React.FC<PropsType> = ({ loginUser, history }) => {
-  const [registerSubmit, {loading: registrationLoading, data: registrationData}] = useMutation(REGISTER_USER, { onError: handleError });
-  const [logInSubmit, {loading: loginLoading, data: loginData}] = useLazyQuery(LOGIN_USER, { onError: handleError });
-  const [authFormState, setAuthFormState] = useState({
+  const [registerSubmit, { loading: registrationLoading, data: registrationData }] = useMutation(REGISTER_USER, {
+    onError: handleError,
+  });
+  const [logInSubmit, { loading: loginLoading, data: loginData }] = useLazyQuery(LOGIN_USER, { onError: handleError });
+  const [authFormState, setAuthFormState] = useState<IUserForm>({
     first_name: '',
     last_name: '',
     password: '',
@@ -32,28 +35,23 @@ const AuthPage: React.FC<PropsType> = ({ loginUser, history }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history, loginUser, loginData?.loginUser, registrationData?.createUser]);
 
-  const onInputChangeHandler = (event: React.ChangeEvent<any>) => {
+  const onInputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
-    setAuthFormState((prevState: any) => ({ ...prevState, [event.target.id]: event.target.value }));
+    setAuthFormState((prevState: IUserForm) => ({ ...prevState, [event.target.id]: event.target.value }));
   };
 
   const onRegister = useCallback(
-    (user: any) => {
-      delete user['passwordConfirm'];
-      try {
-        registerSubmit({ variables: { user } });
-      } catch (e) {
-        console.error(e);
-        handleError(e);
-      }
+    (userForm: IUserForm) => {
+      delete userForm['passwordConfirm'];
+      registerSubmit({ variables: { userForm } });
     },
     [registerSubmit]
   );
 
   const onLogin = useCallback(
-    (user: any) => {
+    (userForm: IUserForm) => {
       try {
-        logInSubmit({ variables: { email: user.email, password: user.password } });
+        logInSubmit({ variables: { email: userForm.email, password: userForm.password } });
       } catch (e) {
         console.error(e);
         handleError(e);
@@ -77,22 +75,20 @@ const AuthPage: React.FC<PropsType> = ({ loginUser, history }) => {
   return (
     <Wrapper>
       <NavBar />
-      {((registrationLoading || loginLoading) && <CircleLoader css={'margin: 200px auto;'} size={150} />) ||
-        AuthComponent}
+      {((registrationLoading || loginLoading) && <CircleLoader css={'margin: 200px auto;'} size={150} />) || AuthComponent}
     </Wrapper>
   );
 };
 
 function mapDispatchToProps(dispatch: any) {
   return {
-    loginUser: (token: any, user: any) => dispatch(loginUser(token, user)),
+    loginUser: (token: string, user: IUser) => dispatch(loginUser(token, user)),
   };
 }
 
 export default connect(null, mapDispatchToProps)(AuthPage);
 
 interface PropsType {
-  setStateFromInputs: (key: string, value: any) => void;
-  loginUser: (token: any, user: any) => void;
+  loginUser: (token: string, user: IUser) => void;
   history: any;
 }

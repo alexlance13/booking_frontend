@@ -7,17 +7,18 @@ import { Wrapper, BuyerDiv } from './styles';
 import { useMutation, useQuery } from '@apollo/client';
 import SingleOffer from 'components/SingleOffer';
 import handleError from 'helpers/handleError';
-import getDatesBetween from 'helpers/getArrayFromRangeDates';
 import DatePicker from 'components/DatePicker';
 import Swal from 'sweetalert2';
-import { addDays } from 'helpers/getArrayFromRangeDates';
+import getDatesBetween, { addDays } from 'helpers/getArrayFromRangeDates';
 import { Link } from 'react-router-dom';
 import { setStateWhenEdit } from 'store/actions/offer';
+import formatDate from 'helpers/formatDate';
+import { IOfferFormStateForEdit, IRange, IUser, IBooking } from 'types';
 
 const SingleApartmentPage: React.FC<PropsType> = ({ user, history, setStateWhenEdit }) => {
   const [id] = useState(window.location.pathname.substr(window.location.pathname.lastIndexOf('/') + 1));
   const [reservedDates, setReservedDates] = useState<Date[]>([]);
-  const [selectionRange, setSelectionRange] = useState({ startDate: TOMORROW, endDate: TOMORROW });
+  const [selectionRange, setSelectionRange] = useState<IRange>({ startDate: TOMORROW, endDate: TOMORROW });
 
   const { loading: queryLoading, data: queryData } = useQuery(GET_APARTMENT_BY_ID, { variables: { id }, onError: handleError });
   const [createBooking, { loading: mutationLoading, data: mutationData }] = useMutation(CREATE_BOOKING, { onError: handleError });
@@ -25,7 +26,7 @@ const SingleApartmentPage: React.FC<PropsType> = ({ user, history, setStateWhenE
   useEffect(() => {
     if (queryData?.getApartmentById?.bookings?.length) {
       let reservedDatesArr: Date[] = [];
-      queryData.getApartmentById.bookings.forEach((booking: any) => {
+      queryData.getApartmentById.bookings.forEach((booking: IBooking) => {
         const arrDatesFromRange = getDatesBetween(new Date(+booking.startDate), new Date(+booking.endDate));
         reservedDatesArr = reservedDatesArr.concat(arrDatesFromRange);
       });
@@ -33,9 +34,7 @@ const SingleApartmentPage: React.FC<PropsType> = ({ user, history, setStateWhenE
       for (let i = 0; ; i++) {
         const initialDate = addDays(TOMORROW, i);
         // Set initial date for a first available date
-        if (
-          !reservedDatesArr.some((date: Date) => date.toISOString().substr(0, 10) === initialDate.toISOString().substr(0, 10))
-        ) {
+        if (!reservedDatesArr.some((date: Date) => formatDate(date) === formatDate(initialDate))) {
           setSelectionRange({ startDate: initialDate, endDate: initialDate });
           break;
         }
@@ -52,11 +51,11 @@ const SingleApartmentPage: React.FC<PropsType> = ({ user, history, setStateWhenE
         showConfirmButton: false,
         timer: 2000,
       });
-      history.push('/orders');
+      // history.push('/orders');
     }
   }, [history, mutationData]);
 
-  const handleSelect = (ranges: any) => {
+  const handleSelect = (ranges: { range1: IRange }) => {
     setSelectionRange(ranges.range1);
   };
 
@@ -65,8 +64,8 @@ const SingleApartmentPage: React.FC<PropsType> = ({ user, history, setStateWhenE
       variables: {
         booking: {
           apartment: id,
-          startDate: selectionRange.startDate.toISOString().substr(0, 10),
-          endDate: selectionRange.endDate.toISOString().substr(0, 10),
+          startDate: formatDate(selectionRange.startDate),
+          endDate: formatDate(selectionRange.endDate),
         },
       },
     });
@@ -124,13 +123,13 @@ function mapStateToProps(state: any) {
 
 function mapDispatchToProps(dispatch: any) {
   return {
-    setStateWhenEdit: (offerForStore: any) => dispatch(setStateWhenEdit(offerForStore)),
+    setStateWhenEdit: (offerForStore: IOfferFormStateForEdit) => dispatch(setStateWhenEdit(offerForStore)),
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SingleApartmentPage);
 
 interface PropsType {
-  user: any;
+  user: IUser;
   history: any;
-  setStateWhenEdit: (offerForStore: any) => void;
+  setStateWhenEdit: (offerForStore: IOfferFormStateForEdit) => void;
 }

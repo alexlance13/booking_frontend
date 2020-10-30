@@ -29,7 +29,7 @@ export default SingleOffer;
 interface PropsType {
   name: string;
   image: string;
-  description: any;
-  price: any;
+  description: string;
+  price: number;
   children: any;
 }

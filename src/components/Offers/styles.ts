@@ -10,6 +10,11 @@ export const Wrapper = styled.div`
     width: 70%;
     margin: 0 auto;
   }
+  @media (max-width: 1000px) {
+    ul {
+      width: 90%;
+    }
+  }
 `;
 
 export const Header = styled.span`

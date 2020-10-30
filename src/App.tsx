@@ -14,6 +14,7 @@ import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import SingleVoucherPage from 'pages/SingleVoucherPage';
 import SingleApartmentPage from 'pages/SingleApartmentPage';
+import AdminPage from 'pages/AdminPage';
 
 const httpLink = createHttpLink({
   uri: process.env.REACT_APP_API_URL,
@@ -48,7 +49,7 @@ function App() {
             <Route path='/apartment/:id' component={SingleApartmentPage} />
             <PrivateRoute role={USER_ROLES.SELLER} component={CreateOfferPage} path='/createOffer' />
             <PrivateRoute role={USER_ROLES.SELLER} component={OffersPage} path='/offers' />
-            {/* <PrivateRoute role='ADMIN' component={Admin} path='/admin' /> */}
+            <PrivateRoute role={USER_ROLES.ADMIN} component={AdminPage} path='/admin' />
             <Redirect to='/' />
           </Switch>
         </BrowserRouter>

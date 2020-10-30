@@ -5,4 +5,7 @@ export const Wrapper = styled.div`
   grid-template: repeat(1fr, 3) / 1fr;
   grid-gap: 20px;
   margin-top: 30px;
+  @media (max-width: 800px) {
+    grid-gap: 5px;
+  }
 `;

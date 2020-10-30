@@ -1,51 +1,49 @@
 import DatePicker from 'components/DatePicker';
 import { OFFER_TYPES, VOUCHER_VARIANT_TYPES } from 'global-constants';
-import React from 'react';
+import React, { RefObject } from 'react';
 import Checkbox from '../Inputs/Checkbox';
 import { SearchParams } from '../styles';
 import { IRange, ISearchParams } from 'types';
 import { Wrapper, DatePickerDiv } from './styles';
 
-const FilterParams: React.FC<PropsType> = ({ searchParams, selectionRange, handleSelect, onInputChangeHandler }) => {
+const FilterParams: React.FC<PropsType> = ({ searchParams, selectionRange, handleSelect, onInputChangeHandler, formRef }) => {
   return (
-    <Wrapper>
+    <Wrapper ref={formRef}>
       <div>
         <SearchParams>Filter by: </SearchParams>
         <label htmlFor='type'>Offer type</label>
         <Checkbox
-          id='type'
+          name='type'
           value={OFFER_TYPES.APARTMENT}
           onInputChangeHandler={onInputChangeHandler}
           checked={searchParams.type === OFFER_TYPES.APARTMENT}
         />
         <Checkbox
-          id='type'
+          name='type'
           value={OFFER_TYPES.VOUCHER}
           onInputChangeHandler={onInputChangeHandler}
           checked={searchParams.type === OFFER_TYPES.VOUCHER}
         />
       </div>
       <div>
-        <label htmlFor='priceF'>Price from</label>
+        <label htmlFor='priceFrom'>Price from</label>
         <input
-          name='number'
-          id='priceF'
+          name='priceFrom'
           type='number'
           className='validate'
           min={0}
           max={9999}
-          value={searchParams.priceF}
+          value={searchParams.priceFrom}
           onChange={({ target }) => onInputChangeHandler(target)}
         />
-        <label htmlFor='priceT'>Price to</label>
+        <label htmlFor='priceTo'>Price to</label>
         <input
-          name='number'
-          id='priceT'
+          name='priceTo'
           type='number'
           className='validate'
-          min={1}
+          min={searchParams.priceFrom || 1}
           max={9999}
-          value={searchParams.priceT}
+          value={searchParams.priceTo}
           onChange={({ target }) => onInputChangeHandler(target)}
         />
       </div>
@@ -53,25 +51,25 @@ const FilterParams: React.FC<PropsType> = ({ searchParams, selectionRange, handl
         <div>
           <label htmlFor='variant'>Variant</label>
           <Checkbox
-            id='variant'
+            name='variant'
             value={VOUCHER_VARIANT_TYPES.RESTAURANT}
             onInputChangeHandler={onInputChangeHandler}
             checked={searchParams.variant === VOUCHER_VARIANT_TYPES.RESTAURANT}
           />
           <Checkbox
-            id='variant'
+            name='variant'
             value={VOUCHER_VARIANT_TYPES.CLUB}
             onInputChangeHandler={onInputChangeHandler}
             checked={searchParams.variant === VOUCHER_VARIANT_TYPES.CLUB}
           />
           <Checkbox
-            id='variant'
+            name='variant'
             value={VOUCHER_VARIANT_TYPES.CINEMA}
             onInputChangeHandler={onInputChangeHandler}
             checked={searchParams.variant === VOUCHER_VARIANT_TYPES.CINEMA}
           />
           <Checkbox
-            id='variant'
+            name='variant'
             value={VOUCHER_VARIANT_TYPES.MUSEUM}
             onInputChangeHandler={onInputChangeHandler}
             checked={searchParams.variant === VOUCHER_VARIANT_TYPES.MUSEUM}
@@ -83,8 +81,7 @@ const FilterParams: React.FC<PropsType> = ({ searchParams, selectionRange, handl
           <div>
             <label htmlFor='rooms'>Rooms number</label>
             <input
-              name='number'
-              id='rooms'
+              name='rooms'
               type='number'
               className='validate'
               min={1}
@@ -106,6 +103,7 @@ export default FilterParams;
 
 interface PropsType {
   searchParams: ISearchParams;
+  formRef: RefObject<HTMLFormElement>;
   selectionRange: {
     startDate: Date;
     endDate: Date;

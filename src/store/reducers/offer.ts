@@ -1,6 +1,7 @@
+import { IOfferFormStateForEdit } from 'types';
 import { SET_STATE_WHEN_EDIT } from '../actions/types';
 
-const initialState = {
+const initialState: {offerFormStore: IOfferFormStateForEdit} = {
   offerFormStore: {
     _id: '',
     offerType: 'apartment',

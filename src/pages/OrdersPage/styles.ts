@@ -8,6 +8,16 @@ export const Wrapper = styled.div`
     width: 70%;
     margin: 0 auto;
   }
+  @media (min-width: 1160px) {
+    & > ul:not(:first-child) {
+      width: 60%;
+    }
+  }
+  @media (max-width: 580px) {
+    & > ul:not(:first-child) {
+      width: 90%;
+    }
+  }
 `;
 
 export const Header = styled.span`
@@ -16,4 +26,8 @@ export const Header = styled.span`
   display: block;
   padding: 40px;
   text-align: center;
+  @media (max-width: 800px) {
+    padding: 20px;
+    font-size: 20px;
+  }
 `;

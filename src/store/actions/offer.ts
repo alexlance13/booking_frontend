@@ -1,13 +1,7 @@
-import { SET_STATE_FROM_INPUTS, SET_STATE_WHEN_EDIT } from '../actions/types';
+import { IOfferFormStateForEdit } from 'types';
+import { SET_STATE_WHEN_EDIT } from '../actions/types';
 
-export function setStateFromInputs(key: string, value: any) {
-  return {
-    type: SET_STATE_FROM_INPUTS,
-    payload: { key, value },
-  };
-}
-
-export function setStateWhenEdit(offerFormStore: any) {
+export function setStateWhenEdit(offerFormStore: IOfferFormStateForEdit) {
   return {
     type: SET_STATE_WHEN_EDIT,
     payload: { offerFormStore },

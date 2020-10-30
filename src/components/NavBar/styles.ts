@@ -5,4 +5,15 @@ export const Wrapper = styled.div`
   user-select: none;
   background-color: #00897b;
   font-weight: 700;
-`;
+  @media (max-width: 800px) {
+    display: block!important;
+    }
+  }
+  @media only screen and (max-width: 992px) {
+  .brand-logo {
+    left: initial;
+    -webkit-transform: initial;
+    transform: initial;
+  }
+}
+  `;

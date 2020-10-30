@@ -1,11 +1,10 @@
-/* eslint-disable no-extend-native */
-export const addDays = function (currentDate: Date, days: number) {
+export const addDays = function (currentDate: Date, days: number): Date {
   var date = new Date(currentDate.valueOf());
   date.setDate(date.getDate() + days);
   return date;
 };
 
-export default function getDatesBetween(startDate: Date, stopDate: Date) {
+export default function getDatesBetween(startDate: Date, stopDate: Date): Date[] {
   var dateArray = [];
   var currentDate = startDate;
   while (currentDate <= stopDate) {

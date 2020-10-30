@@ -1,10 +1,12 @@
 import { Wrapper } from './styles';
 import React from 'react';
+import formatDate from 'helpers/formatDate';
+import { IBooking } from 'types';
 
 const Booking: React.FC<PropsType> = ({ booking }) => {
   const { startDate, endDate, apartment, buyer } = booking;
-  const startDateString = new Date(+startDate).toISOString().substr(0, 10);
-  const endDateString = new Date(+endDate).toISOString().substr(0, 10);
+  const startDateString = formatDate(new Date(+startDate));
+  const endDateString = formatDate(new Date(+endDate));
   return (
     <Wrapper>
       <div>
@@ -32,11 +34,5 @@ const Booking: React.FC<PropsType> = ({ booking }) => {
 export default Booking;
 
 interface PropsType {
-  booking: {
-    startDate: Date;
-    endDate: Date;
-    roomsCount: number;
-    apartment: any;
-    buyer: any;
-  };
+  booking: IBooking;
 }

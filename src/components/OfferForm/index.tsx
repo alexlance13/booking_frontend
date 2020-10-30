@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Wrapper, Header, SubmitDiv } from './styles';
 import Fields from './Fields';
 import { OFFER_TYPES } from 'global-constants';
+import { IOfferFormState, IOfferFormStateForEdit, IUser } from 'types';
 
 const OfferForm: React.FC<PropsType> = ({ offerFormState, onInputChangeHandler, onSubmit, isEditing }) => {
   const { register, handleSubmit, errors } = useForm();
@@ -85,8 +86,8 @@ const OfferForm: React.FC<PropsType> = ({ offerFormState, onInputChangeHandler, 
 export default OfferForm;
 
 interface PropsType {
-  offerFormState: any;
+  offerFormState: IOfferFormState | IOfferFormStateForEdit;
   isEditing: boolean;
-  onSubmit: (user: any) => void;
-  onInputChangeHandler: (event: React.ChangeEvent<any>) => void;
+  onSubmit: (user: IUser) => void;
+  onInputChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }

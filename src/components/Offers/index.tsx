@@ -2,7 +2,7 @@ import Card from 'components/Card';
 import React from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { IOfferFormStateForEdit } from 'types';
+import { IApartment, IOfferFormStateForEdit, IVoucher } from 'types';
 import { Wrapper, Header, InfoDiv, StyledLink } from './styles';
 
 const Offers: React.FC<PropsType> = ({ sellerData, onEdit }) => {
@@ -53,8 +53,8 @@ interface PropsType {
   sellerData: {
     __typename: string;
     _id: string;
-    apartments: any[];
-    vouchers: any[];
+    apartments: IApartment[];
+    vouchers: IVoucher[];
   };
   onEdit: (offerFormStore: IOfferFormStateForEdit) => void;
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Select } from '../styles';
 import getErrorMessage from 'helpers/getValidationMessage';
+import { USER_ROLES } from 'global-constants';
 
 const Role: React.FC<PropsType> = ({ onInputChangeHandler, errors, register }) => {
   return (
@@ -9,8 +10,8 @@ const Role: React.FC<PropsType> = ({ onInputChangeHandler, errors, register }) =
         <option value='' disabled selected>
           Choose your role
         </option>
-        <option value='BUYER'>Buyer</option>
-        <option value='SELLER'>Seller</option>
+        <option value={USER_ROLES.BUYER}>Buyer</option>
+        <option value={USER_ROLES.SELLER}>Seller</option>
       </Select>
       {getErrorMessage(errors, 'role')}
     </div>
@@ -20,7 +21,7 @@ const Role: React.FC<PropsType> = ({ onInputChangeHandler, errors, register }) =
 export default Role;
 
 interface PropsType {
-  onInputChangeHandler: (event: React.ChangeEvent<any>) => void;
+  onInputChangeHandler: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   register: any;
   errors: any;
 }

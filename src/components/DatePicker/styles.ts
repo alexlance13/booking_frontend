@@ -7,4 +7,5 @@ export const Wrapper = styled.div`
   span:focus {
     background-color: white!important;
   }
+  align-content: center;
 `;

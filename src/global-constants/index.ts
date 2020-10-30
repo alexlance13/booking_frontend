@@ -12,6 +12,7 @@ export const YEAR_AFTER_TODAY = new Date(new Date().valueOf() + 1000 * 60 * 60 *
 export const USER_ROLES = {
   SELLER: 'SELLER',
   BUYER: 'BUYER',
+  ADMIN: 'ADMIN',
 };
 
 export const OFFER_TYPES: IOfferTypes = {
@@ -20,10 +21,10 @@ export const OFFER_TYPES: IOfferTypes = {
 };
 
 export const VOUCHER_VARIANT_TYPES: IVoucherVariantTypes = {
-  RESTAURANT: 'restaurant',
-  CLUB: 'club',
-  MUSEUM: 'museum',
-  CINEMA: 'cinema',
+  RESTAURANT: 'RESTAURANT',
+  CLUB: 'CLUB',
+  MUSEUM: 'MUSEUM',
+  CINEMA: 'CINEMA',
 };
 
 export const REGISTER_USER = gql`
@@ -124,8 +125,8 @@ export const EDIT_VOUCHER = gql`
 `;
 
 export const GET_ALL_OFFERS = gql`
-  query getAllOffers {
-    getAllApartments {
+  query getAllOffers($searchParams: SearchParamsInput) {
+    getAllApartments(searchParams: $searchParams) {
       _id
       seller {
         _id
@@ -145,7 +146,7 @@ export const GET_ALL_OFFERS = gql`
         endDate
       }
     }
-    getAllVouchers {
+    getAllVouchers(searchParams: $searchParams) {
       _id
       seller {
         _id
@@ -160,6 +161,30 @@ export const GET_ALL_OFFERS = gql`
       price
       quantity
       variant
+    }
+  }
+`;
+export const GET_ALL_APARTMENTS = gql`
+  query getAllApartments($searchParams: SearchParamsInput) {
+    getAllApartments(searchParams: $searchParams) {
+      _id
+      seller {
+        _id
+        first_name
+        last_name
+        email
+        role
+      }
+      name
+      description
+      image
+      price
+      roomsCount
+      bookings {
+        _id
+        startDate
+        endDate
+      }
     }
   }
 `;

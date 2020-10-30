@@ -12,4 +12,10 @@ export const Wrapper = styled.div`
     top: 50px;
     right: 1px;
   }
+  @media (max-width: 1000px) {
+    form {
+      grid-template: 1fr / 1fr 1fr;
+      grid-gap: 10px;
+    }
+  }
 `;

@@ -1,5 +1,6 @@
 import getErrorMessage from 'helpers/getValidationMessage';
 import React from 'react';
+import { IOfferFormState, IOfferFormStateForEdit } from 'types';
 
 const RoomsCount: React.FC<PropsType> = ({ onInputChangeHandler, errors, register, offerFormState }) => {
   return (
@@ -28,8 +29,8 @@ const RoomsCount: React.FC<PropsType> = ({ onInputChangeHandler, errors, registe
 export default RoomsCount;
 
 interface PropsType {
-  offerFormState: any;
-  onInputChangeHandler: (event: React.ChangeEvent<any>) => void;
+  offerFormState: IOfferFormState | IOfferFormStateForEdit;
+  onInputChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
   register: any;
   errors: any;
 }
