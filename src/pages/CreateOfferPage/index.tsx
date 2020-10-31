@@ -36,7 +36,7 @@ const CreateOfferPage: React.FC<PropsType> = ({ history }) => {
         showConfirmButton: false,
         timer: 2000,
       });
-      setTimeout(() => history.push('/offers'), 1500);
+      history.push('/offers')
     }
   }, [apartmentData, history, voucherData]);
 

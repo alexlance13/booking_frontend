@@ -27,7 +27,7 @@ const EditOfferPage: React.FC<PropsType> = ({ offerFormStore, history }) => {
   });
 
   useEffect(() => {
-    if (!offerFormStore._id) setTimeout(() => history.push('/'), 1500);
+    if (!offerFormStore._id) history.push('/')
     setOfferFormState(offerFormStore);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -40,7 +40,7 @@ const EditOfferPage: React.FC<PropsType> = ({ offerFormStore, history }) => {
         showConfirmButton: false,
         timer: 2000,
       });
-      setTimeout(() => history.push('/offers'), 1500);
+      history.push('/offers')
     }
   }, [history, resultOfEditingApartment, resultOfEditingVoucher]);
 

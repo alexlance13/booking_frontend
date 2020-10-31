@@ -20,8 +20,15 @@ const SingleApartmentPage: React.FC<PropsType> = ({ user, history, setStateWhenE
   const [reservedDates, setReservedDates] = useState<Date[]>([]);
   const [selectionRange, setSelectionRange] = useState<IRange>({ startDate: TOMORROW, endDate: TOMORROW });
 
-  const { loading: queryLoading, data: queryData } = useQuery(GET_APARTMENT_BY_ID, { variables: { id }, onError: handleError });
+  const { loading: queryLoading, data: queryData, error } = useQuery(GET_APARTMENT_BY_ID, { variables: { id } });
   const [createBooking, { loading: mutationLoading, data: mutationData }] = useMutation(CREATE_BOOKING, { onError: handleError });
+
+  if(error) {
+    if(error?.message?.substr(0, 4) === 'Cast') {
+      handleError(new Error('There is no apartment with this id'));
+      history.push('/');
+    } else handleError(error);
+  }
 
   useEffect(() => {
     if (queryData?.getApartmentById?.bookings?.length) {
@@ -43,14 +50,14 @@ const SingleApartmentPage: React.FC<PropsType> = ({ user, history, setStateWhenE
   }, [queryData]);
 
   useEffect(() => {
-    if (mutationData?.createBooking._id) {
+    if (mutationData?.createBooking?._id) {
       Swal.fire({
         icon: 'success',
         title: "You've just book this apartment",
         showConfirmButton: false,
         timer: 2000,
       });
-      setTimeout(() => history.push('/orders'), 1500);
+      history.push('/orders')
     }
   }, [history, mutationData]);
 
@@ -103,7 +110,7 @@ const SingleApartmentPage: React.FC<PropsType> = ({ user, history, setStateWhenE
                 </button>
               </BuyerDiv>
             )}
-            {queryData.getApartmentById.seller._id === user._id && (
+            {queryData?.getApartmentById?.seller?._id === user?._id && (
               <Link onClick={() => onEditHandler()} className='waves-light btn' to='/editOffer'>
                 Edit
               </Link>

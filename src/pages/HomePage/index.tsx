@@ -41,7 +41,7 @@ const HomePage: React.FC = () => {
 
   const [searchParams, setSearchParams] = useState<ISearchParams>(initialSearchParamsState);
 
-  const [getAllOffers, { loading, data, error }] = useLazyQuery(GET_ALL_OFFERS, { onError: handleError });
+  const [getAllOffers, { loading, data, error }] = useLazyQuery(GET_ALL_OFFERS, { onError: handleError, fetchPolicy: 'network-only', });
 
   const getAllOffersWithSearchParamsDebounce = useMemo(() => debounce(getAllOffers, 1000), [getAllOffers]);
 

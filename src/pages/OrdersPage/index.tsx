@@ -18,7 +18,7 @@ const OrderPage: React.FC<PropsType> = ({ user }) => {
     user.role === USER_ROLES.SELLER
       ? GET_ALL_ORDERS_AND_BOOKINGS_FROM_A_SPECIFIC_SELLER
       : GET_ALL_ORDERS_AND_BOOKINGS_FROM_A_SPECIFIC_BUYER;
-  const { loading, error, data } = useQuery(query, { variables: { id: user._id } });
+  const { loading, data } = useQuery(query, { variables: { id: user._id }, fetchPolicy: 'network-only', onError: handleError });
   const bookings: IBooking[] = useMemo(
     () =>
       user.role === USER_ROLES.SELLER
@@ -38,14 +38,13 @@ const OrderPage: React.FC<PropsType> = ({ user }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [data?.getUserById?.vouchers, data?.getUserById?.orders]
   );
-  if (loading) return <CircleLoader css={'margin: 200px auto;'} size={150} />;
-  if (error) handleError(error);
+
   return (
     <Wrapper>
       <NavBar />
       {user?.role === USER_ROLES.SELLER && <Header>Here you can see your booked apartments and ordered vouchers</Header>}
       {user?.role === USER_ROLES.BUYER && <Header>Here you can see your bookings and orders</Header>}
-      <Orders bookings={bookings} orders={orders} />
+      {loading ? <CircleLoader css={'margin: 200px auto;'} size={150} /> : <Orders bookings={bookings} orders={orders} />}
     </Wrapper>
   );
 };

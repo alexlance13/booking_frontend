@@ -16,7 +16,7 @@ import { IOfferFormStateForEdit, IUser } from 'types';
 const SingleVoucherPage: React.FC<PropsType> = ({ user, history, setStateWhenEdit }) => {
   const [id] = useState(window.location.pathname.substr(window.location.pathname.lastIndexOf('/') + 1));
 
-  const { loading: queryLoading, data: queryData } = useQuery(GET_VOUCHER_BY_ID, {
+  const { loading: queryLoading, data: queryData, error } = useQuery(GET_VOUCHER_BY_ID, {
     variables: { id },
     onError: handleError,
   });
@@ -24,6 +24,13 @@ const SingleVoucherPage: React.FC<PropsType> = ({ user, history, setStateWhenEdi
     onError: handleError,
   });
   const [quantity, setQuantity] = useState(1);
+
+  if(error) {
+    if(error?.message?.substr(0, 4) === 'Cast') {
+      handleError(new Error('There is no voucher with this id'));
+      history.push('/');
+    } else handleError(error);
+  }
 
   useEffect(() => {
     if (mutationData?.createOrder._id) {
@@ -33,7 +40,7 @@ const SingleVoucherPage: React.FC<PropsType> = ({ user, history, setStateWhenEdi
         showConfirmButton: false,
         timer: 2000,
       });
-      setTimeout(() => history.push('/orders'), 1500);
+      history.push('/orders')
     }
   }, [history, mutationData]);
 
