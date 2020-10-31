@@ -5,7 +5,7 @@ import handleError from 'helpers/handleError';
 import OfferForm from 'components/OfferForm';
 import { useMutation } from '@apollo/client';
 import { CREATE_NEW_APARTMENT, CREATE_NEW_VOUCHER, OFFER_TYPES } from 'global-constants';
-import { IOfferFormState } from 'types';
+import { IOfferFormState, MyChangeEvents } from 'types';
 import CircleLoader from 'react-spinners/CircleLoader';
 import Swal from 'sweetalert2';
 
@@ -29,18 +29,18 @@ const CreateOfferPage: React.FC<PropsType> = ({ history }) => {
   });
 
   useEffect(() => {
-    if (apartmentData?.createApartment?.id || voucherData?.createVoucher?._id) {
+    if (apartmentData?.createApartment?._id || voucherData?.createVoucher?._id) {
       Swal.fire({
         icon: 'success',
         title: 'Your offer was successfully created',
         showConfirmButton: false,
         timer: 2000,
       });
-      history.push('/offers');
+      setTimeout(() => history.push('/offers'), 1500);
     }
   }, [apartmentData, history, voucherData]);
 
-  const onInputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onInputChangeHandler = (event: MyChangeEvents) => {
     const value = event.target.type === 'number' ? +event.target.value : event.target.value;
     setOfferFormState((prevState: IOfferFormState) => ({ ...prevState, [event.target.id]: value }));
     event.persist();

@@ -50,5 +50,5 @@ export default Register;
 interface PropsType {
   authFormState: IUserForm;
   onSubmit: (user: IUserForm) => void;
-  onInputChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onInputChangeHandler: (event: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void;
 }

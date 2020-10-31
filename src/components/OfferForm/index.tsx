@@ -89,5 +89,5 @@ interface PropsType {
   offerFormState: IOfferFormState | IOfferFormStateForEdit;
   isEditing: boolean;
   onSubmit: (user: IUser) => void;
-  onInputChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onInputChangeHandler: (event: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void;
 }

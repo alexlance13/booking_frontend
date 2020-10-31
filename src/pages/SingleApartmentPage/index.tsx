@@ -3,7 +3,7 @@ import NavBar from 'components/NavBar';
 import { connect } from 'react-redux';
 import { GET_APARTMENT_BY_ID, USER_ROLES, CREATE_BOOKING, TOMORROW, OFFER_TYPES } from 'global-constants';
 import { CircleLoader } from 'react-spinners';
-import { Wrapper, BuyerDiv } from './styles';
+import { Wrapper, BuyerDiv, StyledNavLink } from './styles';
 import { useMutation, useQuery } from '@apollo/client';
 import SingleOffer from 'components/SingleOffer';
 import handleError from 'helpers/handleError';
@@ -40,7 +40,6 @@ const SingleApartmentPage: React.FC<PropsType> = ({ user, history, setStateWhenE
         }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryData]);
 
   useEffect(() => {
@@ -51,7 +50,7 @@ const SingleApartmentPage: React.FC<PropsType> = ({ user, history, setStateWhenE
         showConfirmButton: false,
         timer: 2000,
       });
-      // history.push('/orders');
+      setTimeout(() => history.push('/orders'), 1500);
     }
   }, [history, mutationData]);
 
@@ -95,6 +94,7 @@ const SingleApartmentPage: React.FC<PropsType> = ({ user, history, setStateWhenE
               <span>Number of rooms: </span>
               {queryData.getApartmentById.roomsCount}
             </div>
+            {!user?.role && <StyledNavLink to='/auth/login'>Click me and login as buyer to be able to order</StyledNavLink>}
             {user?.role === USER_ROLES.BUYER && (
               <BuyerDiv>
                 <DatePicker disabledDates={reservedDates} handleSelect={handleSelect} selectionRange={selectionRange} />

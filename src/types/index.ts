@@ -1,3 +1,6 @@
+import { Operation } from "@apollo/client";
+import { ExecutionResult, GraphQLError } from "graphql";
+
 export interface IOfferFormState {
   offerType?: 'apartment' | 'voucher';
   name: string;
@@ -106,3 +109,17 @@ export interface IRelatedParams {
   apartment: string[];
 }
 export type Entity = 'apartments' | 'vouchers';
+
+export interface ErrorResponse {
+  graphQLErrors?: GraphQLError[];
+  networkError?: Error;
+  response?: ExecutionResult;
+  operation: Operation;
+}
+interface Error {
+  name: string;
+  message: string;
+  stack?: string;
+}
+
+export type MyChangeEvents = React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLTextAreaElement>;

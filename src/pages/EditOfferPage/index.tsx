@@ -7,7 +7,7 @@ import handleError from 'helpers/handleError';
 import OfferForm from 'components/OfferForm';
 import { useMutation } from '@apollo/client';
 import { EDIT_APARTMENT, EDIT_VOUCHER, OFFER_TYPES } from 'global-constants';
-import { IOfferFormStateForEdit } from 'types';
+import { IOfferFormStateForEdit, MyChangeEvents } from 'types';
 import Swal from 'sweetalert2';
 
 const EditOfferPage: React.FC<PropsType> = ({ offerFormStore, history }) => {
@@ -27,7 +27,7 @@ const EditOfferPage: React.FC<PropsType> = ({ offerFormStore, history }) => {
   });
 
   useEffect(() => {
-    if (!offerFormStore._id) history.push('/');
+    if (!offerFormStore._id) setTimeout(() => history.push('/'), 1500);
     setOfferFormState(offerFormStore);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -40,13 +40,13 @@ const EditOfferPage: React.FC<PropsType> = ({ offerFormStore, history }) => {
         showConfirmButton: false,
         timer: 2000,
       });
-      history.push('/offers');
+      setTimeout(() => history.push('/offers'), 1500);
     }
   }, [history, resultOfEditingApartment, resultOfEditingVoucher]);
 
-  const onInputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onInputChangeHandler = (event: MyChangeEvents) => {
     const value = event.target.type === 'number' ? +event.target.value : event.target.value;
-    setOfferFormState((prevState: any) => ({ ...prevState, [event.target.id]: value }));
+    setOfferFormState((prevState: IOfferFormStateForEdit) => ({ ...prevState, [event.target.id]: value }));
     event.persist();
   };
 
@@ -54,8 +54,7 @@ const EditOfferPage: React.FC<PropsType> = ({ offerFormStore, history }) => {
     const id = offerFormState._id;
     let offerFormStateMap = Object.entries(offerFormState);
     offerFormStateMap = offerFormStateMap.filter(
-      // @ts-ignore
-      ([key, value]: [string, string]) => value !== '' || value !== offerFormStore[key]
+      ([key, value]) => value !== '' || value !== offerFormStore[key as keyof IOfferFormStateForEdit]
     ); // remove not updated or empty fields
     if (offerFormState.offerType === OFFER_TYPES.APARTMENT) {
       const apartment = Object.fromEntries(

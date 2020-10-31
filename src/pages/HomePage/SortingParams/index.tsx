@@ -2,7 +2,6 @@ import React from 'react';
 import { SearchParams } from '../styles';
 import { ISearchParams } from 'types';
 import { Wrapper } from './styles';
-import DatesSelect from '../Inputs/DatesSelect';
 import PriceSelect from '../Inputs/PriceSelect';
 import RoomsSelect from '../Inputs/RoomsSelect';
 
@@ -14,10 +13,6 @@ const SortingParams: React.FC<PropsType> = ({ searchParams, onInputChangeHandler
         <div>
           <label htmlFor='sortByPrice'>Price</label>
           <PriceSelect onInputChangeHandler={onInputChangeHandler} value={searchParams.sortByPrice} />
-        </div>
-        <div>
-          <label htmlFor='availableDates'>Available dates</label>
-          <DatesSelect onInputChangeHandler={onInputChangeHandler} value={searchParams.availableDates} />
         </div>
         <div>
           <label htmlFor='sortByRooms'>Rooms</label>

@@ -165,8 +165,8 @@ export const GET_ALL_OFFERS = gql`
   }
 `;
 export const GET_ALL_APARTMENTS = gql`
-  query getAllApartments($searchParams: SearchParamsInput) {
-    getAllApartments(searchParams: $searchParams) {
+  query getAllApartments($searchParams: SearchParamsInput, $admin: Boolean) {
+    getAllApartments(searchParams: $searchParams, admin: $admin) {
       _id
       seller {
         _id

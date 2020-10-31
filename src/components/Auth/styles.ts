@@ -12,6 +12,12 @@ export const Wrapper = styled.div`
   @media (max-width: 800px) {
     width: 90%;
   }
+  a {
+    color: #03a9f4!important;
+    &:hover {
+      color: #81d4fa!important;
+    }
+  }
 `;
 
 export const Header = styled.span`

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { GET_VOUCHER_BY_ID, USER_ROLES, CREATE_ORDER, OFFER_TYPES } from 'global-constants';
 import { CircleLoader } from 'react-spinners';
 import handleError from 'helpers/handleError';
-import { Wrapper } from './styles';
+import { Wrapper, StyledNavLink } from './styles';
 import { useMutation, useQuery } from '@apollo/client';
 import SingleOffer from 'components/SingleOffer';
 import { Link } from 'react-router-dom';
@@ -33,7 +33,7 @@ const SingleVoucherPage: React.FC<PropsType> = ({ user, history, setStateWhenEdi
         showConfirmButton: false,
         timer: 2000,
       });
-      history.push('/orders');
+      setTimeout(() => history.push('/orders'), 1500);
     }
   }, [history, mutationData]);
 
@@ -69,6 +69,7 @@ const SingleVoucherPage: React.FC<PropsType> = ({ user, history, setStateWhenEdi
               <span>Available: </span>
               {queryData.getVoucherById.quantity}pcs
             </div>
+            {!user?.role && <StyledNavLink to='/auth/login'>Click me and login as buyer to be able to order</StyledNavLink>}
             {user?.role === USER_ROLES.BUYER && (
               <BuyerDiv
                 onOrderHandler={onOrderHandler}

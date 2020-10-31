@@ -21,7 +21,7 @@ const AdminPage: React.FC = () => {
   const getAllApartmentsWithSearchParamsDebounce = useMemo(() => debounce(getAllApartments, 500), [getAllApartments]);
 
   useEffect(() => {
-    getAllApartmentsWithSearchParamsDebounce({ variables: { searchParams: { sortByRooms: 'desc', startDate: '' } } });
+    getAllApartmentsWithSearchParamsDebounce({ variables: { searchParams: { sortByRooms: 'desc', startDate: '' }, admin: true } });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -36,6 +36,7 @@ const AdminPage: React.FC = () => {
             endDate: formatDate(ranges.range1.endDate),
             sortByRooms: 'desc',
           },
+          admin: true,
         },
       });
   };

@@ -155,8 +155,7 @@ const HomePage: React.FC = () => {
       window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
 
       const relatedParamsMap = Object.entries(relatedParams);
-      // @ts-ignore
-      if (name === 'type' && value && relatedParams[value]) {
+      if (name === 'type' && value && relatedParams[value as keyof IRelatedParams]) {
         // clear all params that specific and not for this type
         relatedParamsMap.forEach(
           ([entity, specificParams]: [string, string[]]): false | void => entity !== name && deleteParams(specificParams)

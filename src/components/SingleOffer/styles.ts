@@ -58,7 +58,7 @@ export const ImageDiv = styled.div`
 export const OrderDiv = styled.div`
   display: grid;
   align-items: center;
-  grid-template: 1fr / 1fr 1fr 1fr;
+  grid-template: 1fr / 1fr 1fr 2fr;
   @media (max-width: 1000px) {
       grid-template: 25px 1fr / 1fr 1fr;
       grid-gap: 30px;

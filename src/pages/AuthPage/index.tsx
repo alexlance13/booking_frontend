@@ -9,7 +9,7 @@ import CircleLoader from 'react-spinners/CircleLoader';
 import { useMutation, useLazyQuery } from '@apollo/client';
 import { REGISTER_USER, LOGIN_USER } from 'global-constants';
 import handleError from 'helpers/handleError';
-import { IUser, IUserForm } from 'types';
+import { IUser, IUserForm, MyChangeEvents } from 'types';
 
 const AuthPage: React.FC<PropsType> = ({ loginUser, history }) => {
   const [registerSubmit, { loading: registrationLoading, data: registrationData }] = useMutation(REGISTER_USER, {
@@ -30,12 +30,12 @@ const AuthPage: React.FC<PropsType> = ({ loginUser, history }) => {
     if (userObject) {
       const { token, user } = userObject;
       loginUser(token, user);
-      history.push('/');
+      setTimeout(() => history.push('/'), 1500);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history, loginUser, loginData?.loginUser, registrationData?.createUser]);
 
-  const onInputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onInputChangeHandler = (event: MyChangeEvents) => {
     event.persist();
     setAuthFormState((prevState: IUserForm) => ({ ...prevState, [event.target.id]: event.target.value }));
   };
@@ -43,7 +43,7 @@ const AuthPage: React.FC<PropsType> = ({ loginUser, history }) => {
   const onRegister = useCallback(
     (userForm: IUserForm) => {
       delete userForm['passwordConfirm'];
-      registerSubmit({ variables: { userForm } });
+      registerSubmit({ variables: { user: userForm } });
     },
     [registerSubmit]
   );
@@ -67,7 +67,7 @@ const AuthPage: React.FC<PropsType> = ({ loginUser, history }) => {
       case '/auth/register':
         return <Register onInputChangeHandler={onInputChangeHandler} authFormState={authFormState} onSubmit={onRegister} />;
       default:
-        history.push('/');
+        setTimeout(() => history.push('/'), 1500);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onInputChangeHandler, authFormState, onLogin, onRegister, history, window.location.pathname]);

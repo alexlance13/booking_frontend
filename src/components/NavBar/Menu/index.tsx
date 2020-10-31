@@ -22,7 +22,7 @@ const Menu: React.FC<PropsType> = ({ user, logOut }) => {
   });
 
   useEffect(() => {
-    window.addEventListener('resize', () => setWindowWidth(document.body.clientWidth));
+    window.addEventListener('resize', () => setWindowWidth(document.body.clientWidth))
   }, []);
 
   useEffect(() => {
