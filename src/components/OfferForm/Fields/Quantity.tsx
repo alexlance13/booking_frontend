@@ -1,17 +1,20 @@
 import getErrorMessage from 'helpers/getValidationMessage';
 import React from 'react';
 
-const Quantity: React.FC<PropsType> = ({ onInputChangeHandler, errors, register, quantityValue, availableQuantity }) => {
+const Quantity: React.FC<PropsType> = ({
+  onInputChangeHandler,
+  errors,
+  control,
+  Controller,
+  quantityValue,
+  availableQuantity,
+}) => {
   return (
     <div className='input-field col s6'>
-      <input
-        name='quantity'
-        id='quantity'
-        type='number'
-        className='validate'
-        value={quantityValue || 1}
-        onChange={onInputChangeHandler}
-        ref={register({
+      <Controller
+        control={control}
+        defaultValue={quantityValue}
+        rules={{
           required: true,
           min: 1,
           max: 1000,
@@ -19,7 +22,23 @@ const Quantity: React.FC<PropsType> = ({ onInputChangeHandler, errors, register,
             if (availableQuantity && typeof availableQuantity === 'number' && availableQuantity < value) return 'Too much';
             return true;
           },
-        })}
+        }}
+        name='quantity'
+        value={quantityValue}
+        render={(props: any) => (
+          <input
+            onChange={(event) => {
+              props.onChange(event);
+              onInputChangeHandler(event);
+              return event;
+            }}
+            value={props.value}
+            id='quantity'
+            name={props.name}
+            type='number'
+            className='validate'
+          />
+        )}
       />
       {getErrorMessage(errors, 'quantity')}
       <label className='active' htmlFor='quantity'>
@@ -34,7 +53,9 @@ export default Quantity;
 interface PropsType {
   quantityValue?: number;
   onInputChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  register: any;
+
+  control: any;
+  Controller: any;
   errors: any;
   availableQuantity?: number;
 }

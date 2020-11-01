@@ -7,7 +7,7 @@ const Role: React.FC<PropsType> = ({ onInputChangeHandler, errors, register }) =
   return (
     <div className='input-field'>
       <Select onChange={onInputChangeHandler} ref={register({ required: true })} name='role' id='role'>
-        <option value='' disabled selected>
+        <option value='' disabled>
           Choose your role
         </option>
         <option value={USER_ROLES.BUYER}>Buyer</option>

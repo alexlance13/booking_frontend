@@ -5,8 +5,11 @@ import Checkbox from '../Inputs/Checkbox';
 import { SearchParams } from '../styles';
 import { IRange, ISearchParams } from 'types';
 import { Wrapper, DatePickerDiv } from './styles';
+import { useForm, Controller } from 'react-hook-form';
 
 const FilterParams: React.FC<PropsType> = ({ searchParams, selectionRange, handleSelect, onInputChangeHandler, formRef }) => {
+  const {control, errors } = useForm({mode: 'onChange'});
+
   return (
     <Wrapper ref={formRef}>
       <div>
@@ -41,7 +44,7 @@ const FilterParams: React.FC<PropsType> = ({ searchParams, selectionRange, handl
           name='priceTo'
           type='number'
           className='validate'
-          min={searchParams.priceFrom || 1}
+          min={searchParams.priceFrom}
           max={9999}
           value={searchParams.priceTo}
           onChange={({ target }) => onInputChangeHandler(target)}

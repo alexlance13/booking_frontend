@@ -11,8 +11,10 @@ import { IOfferFormStateForEdit, MyChangeEvents } from 'types';
 import Swal from 'sweetalert2';
 
 const EditOfferPage: React.FC<PropsType> = ({ offerFormStore, history }) => {
-  const [editApartment, resultOfEditingApartment] = useMutation(EDIT_APARTMENT, { onError: handleError });
-  const [editVoucher, resultOfEditingVoucher] = useMutation(EDIT_VOUCHER, { onError: handleError });
+  const [editApartment, { loading: apartmentLoading, data: apartmentData }] = useMutation(EDIT_APARTMENT, {
+    onError: handleError,
+  });
+  const [editVoucher, { loading: voucherLoading, data: voucherData }] = useMutation(EDIT_VOUCHER, { onError: handleError });
 
   const [offerFormState, setOfferFormState] = useState<IOfferFormStateForEdit>({
     _id: '',
@@ -20,33 +22,34 @@ const EditOfferPage: React.FC<PropsType> = ({ offerFormStore, history }) => {
     name: '',
     description: '',
     image: '',
-    price: '',
-    roomsCount: '',
+    price: 1,
+    roomsCount: 1,
     variant: 'CLUB',
-    quantity: '',
+    quantity: 1,
   });
 
   useEffect(() => {
-    if (!offerFormStore._id) history.push('/')
+    if (!offerFormStore._id) history.push('/');
     setOfferFormState(offerFormStore);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (resultOfEditingApartment?.data?.editApartment?._id || resultOfEditingVoucher?.data?.editVoucher?._id) {
+    if (apartmentData?.editApartment?._id || voucherData?.editVoucher?._id) {
       Swal.fire({
         icon: 'success',
         title: 'Your offer was successfully edited',
         showConfirmButton: false,
         timer: 2000,
       });
-      history.push('/offers')
+      history.push('/offers');
     }
-  }, [history, resultOfEditingApartment, resultOfEditingVoucher]);
+  }, [apartmentData, history, voucherData]);
 
   const onInputChangeHandler = (event: MyChangeEvents) => {
+    console.log(offerFormState)
     const value = event.target.type === 'number' ? +event.target.value : event.target.value;
-    setOfferFormState((prevState: IOfferFormStateForEdit) => ({ ...prevState, [event.target.id]: value }));
+    setOfferFormState((prevState: IOfferFormStateForEdit) => ({ ...prevState, [event.target.name]: value }));
     event.persist();
   };
 
@@ -72,7 +75,7 @@ const EditOfferPage: React.FC<PropsType> = ({ offerFormStore, history }) => {
   return (
     <Wrapper>
       <NavBar />
-      {resultOfEditingApartment?.loading || resultOfEditingVoucher?.loading ? (
+      {apartmentLoading || voucherLoading ? (
         <CircleLoader css={'margin: 200px auto;'} size={150} />
       ) : (
         <OfferForm

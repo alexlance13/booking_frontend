@@ -88,10 +88,10 @@ const HomePage: React.FC = () => {
         window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
       }
     }
-    if (formRef?.current?.checkValidity()) {
-      // counter for request only when start and  end dates were defined
+    if (formRef?.current?.checkValidity())
+    // counter for request only when start and  end dates were defined
       if (!(counter % 2)) getAllOffersWithSearchParamsDebounce({ variables: { searchParams } });
-    } else if (formRef?.current?.checkValidity() === false) validErrorMessageDebounce('Some of your fields is invalid');
+    // } else if (formRef?.current?.checkValidity() === false) validErrorMessageDebounce('Some of your fields is invalid');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formRef, getAllOffersWithSearchParamsDebounce, searchParams, validErrorMessageDebounce]);
 

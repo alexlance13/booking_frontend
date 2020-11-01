@@ -1,15 +1,15 @@
-import { Operation } from "@apollo/client";
-import { ExecutionResult, GraphQLError } from "graphql";
+import { Operation } from '@apollo/client';
+import { ExecutionResult, GraphQLError } from 'graphql';
 
 export interface IOfferFormState {
   offerType?: 'apartment' | 'voucher';
   name: string;
   description: string;
   image: string;
-  price?: string;
-  roomsCount?: string;
+  price?: number;
+  roomsCount?: number;
   variant?: 'CLUB' | 'MUSEUM' | 'RESTAURANT' | 'CINEMA';
-  quantity?: string;
+  quantity?: number;
 }
 export interface IOfferFormStateForEdit {
   _id: string;
@@ -17,10 +17,10 @@ export interface IOfferFormStateForEdit {
   name?: string;
   description?: string;
   image?: string;
-  price?: string;
-  roomsCount?: string;
+  price?: number;
+  roomsCount?: number;
   variant?: 'CLUB' | 'MUSEUM' | 'RESTAURANT' | 'CINEMA';
-  quantity?: string;
+  quantity?: number;
 }
 export interface IOfferTypes {
   APARTMENT: 'apartment';
@@ -121,4 +121,7 @@ interface Error {
   stack?: string;
 }
 
-export type MyChangeEvents = React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLTextAreaElement>;
+export type MyChangeEvents =
+  | React.ChangeEvent<HTMLInputElement>
+  | React.ChangeEvent<HTMLSelectElement>
+  | React.ChangeEvent<HTMLTextAreaElement>;

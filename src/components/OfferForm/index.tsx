@@ -1,12 +1,12 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { Wrapper, Header, SubmitDiv } from './styles';
 import Fields from './Fields';
 import { OFFER_TYPES } from 'global-constants';
 import { IOfferFormState, IOfferFormStateForEdit, IUser, MyChangeEvents } from 'types';
 
 const OfferForm: React.FC<PropsType> = ({ offerFormState, onInputChangeHandler, onSubmit, isEditing }) => {
-  const { register, handleSubmit, errors } = useForm();
+  const { handleSubmit, errors, control } = useForm();
 
   return (
     <Wrapper>
@@ -17,14 +17,16 @@ const OfferForm: React.FC<PropsType> = ({ offerFormState, onInputChangeHandler, 
             onInputChangeHandler={onInputChangeHandler}
             offerFormState={offerFormState}
             errors={errors}
-            register={register}
+            Controller={Controller}
+            control={control}
           />
           <div className='row'>
             <Fields.Description
               onInputChangeHandler={onInputChangeHandler}
               offerFormState={offerFormState}
               errors={errors}
-              register={register}
+              Controller={Controller}
+              control={control}
             />
           </div>
           <div className='row'>
@@ -32,7 +34,8 @@ const OfferForm: React.FC<PropsType> = ({ offerFormState, onInputChangeHandler, 
               onInputChangeHandler={onInputChangeHandler}
               offerFormState={offerFormState}
               errors={errors}
-              register={register}
+              Controller={Controller}
+              control={control}
             />
           </div>
           <Fields.OfferType
@@ -40,14 +43,16 @@ const OfferForm: React.FC<PropsType> = ({ offerFormState, onInputChangeHandler, 
             onInputChangeHandler={onInputChangeHandler}
             offerFormState={offerFormState}
             errors={errors}
-            register={register}
+            Controller={Controller}
+            control={control}
           />
           {offerFormState?.offerType === OFFER_TYPES.APARTMENT && (
             <Fields.RoomsCount
               onInputChangeHandler={onInputChangeHandler}
               offerFormState={offerFormState}
               errors={errors}
-              register={register}
+              Controller={Controller}
+              control={control}
             />
           )}
           {offerFormState?.offerType === OFFER_TYPES.VOUCHER && (
@@ -56,13 +61,15 @@ const OfferForm: React.FC<PropsType> = ({ offerFormState, onInputChangeHandler, 
                 onInputChangeHandler={onInputChangeHandler}
                 offerFormState={offerFormState}
                 errors={errors}
-                register={register}
+                Controller={Controller}
+                control={control}
               />
               <Fields.Quantity
                 onInputChangeHandler={onInputChangeHandler}
-                quantityValue={Number(offerFormState.quantity)}
+                quantityValue={offerFormState.quantity}
                 errors={errors}
-                register={register}
+                Controller={Controller}
+                control={control}
               />
             </>
           )}
@@ -70,7 +77,8 @@ const OfferForm: React.FC<PropsType> = ({ offerFormState, onInputChangeHandler, 
             onInputChangeHandler={onInputChangeHandler}
             offerFormState={offerFormState}
             errors={errors}
-            register={register}
+            Controller={Controller}
+            control={control}
           />
           <SubmitDiv>
             <button className='btn waves-light' type='submit' name='action'>

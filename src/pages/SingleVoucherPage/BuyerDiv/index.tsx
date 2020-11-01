@@ -1,10 +1,10 @@
 import React from 'react';
 import { Wrapper } from './styles';
 import Quantity from 'components/OfferForm/Fields/Quantity';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 
 const BuyerDiv: React.FC<PropsType> = ({ onOrderHandler, quantity, onInputChangeHandler, availableQuantity }) => {
-  const { register, handleSubmit, errors } = useForm();
+  const { handleSubmit, errors, control } = useForm();
 
   return (
     <Wrapper>
@@ -14,7 +14,8 @@ const BuyerDiv: React.FC<PropsType> = ({ onOrderHandler, quantity, onInputChange
           onInputChangeHandler={onInputChangeHandler}
           availableQuantity={availableQuantity}
           errors={errors}
-          register={register}
+          control={control}
+          Controller={Controller}
         />
         <button className='waves-light btn' type='submit' name='action'>
           Order
