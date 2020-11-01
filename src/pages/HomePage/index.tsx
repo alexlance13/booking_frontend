@@ -26,7 +26,6 @@ const initialSearchParamsState = {
   endDate: '', // by end date
   // ___________sorting
   sortByPrice: '',
-  availableDates: '', // by closest or latest available dates
   sortByRooms: '',
 };
 
@@ -146,7 +145,7 @@ const HomePage: React.FC = () => {
       const params = new URLSearchParams(window.location.search);
       const relatedParams: IRelatedParams = {
         voucher: ['variant'],
-        apartment: ['rooms', 'startDate', 'endDate', 'availableDates', 'sortByRooms'],
+        apartment: ['rooms', 'startDate', 'endDate', 'sortByRooms'],
       };
       if (params.get(name)) {
         if (params.get(name) === value) params.delete(name);

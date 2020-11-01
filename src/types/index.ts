@@ -57,7 +57,6 @@ export interface ISearchParams {
   startDate: string | Date;
   endDate: string | Date;
   sortByPrice: string;
-  availableDates: string;
   sortByRooms: string;
 }
 
