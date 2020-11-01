@@ -60,7 +60,7 @@ const OfferForm: React.FC<PropsType> = ({ offerFormState, onInputChangeHandler, 
               />
               <Fields.Quantity
                 onInputChangeHandler={onInputChangeHandler}
-                quantityValue={offerFormState.quantity}
+                quantityValue={Number(offerFormState.quantity)}
                 errors={errors}
                 register={register}
               />
