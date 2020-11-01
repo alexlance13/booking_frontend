@@ -20,10 +20,10 @@ const EditOfferPage: React.FC<PropsType> = ({ offerFormStore, history }) => {
     name: '',
     description: '',
     image: '',
-    price: 0,
-    roomsCount: 1,
+    price: '',
+    roomsCount: '',
     variant: 'CLUB',
-    quantity: 1,
+    quantity: '',
   });
 
   useEffect(() => {

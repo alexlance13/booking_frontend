@@ -22,10 +22,10 @@ const CreateOfferPage: React.FC<PropsType> = ({ history }) => {
     name: '',
     description: '',
     image: '',
-    price: 0,
-    roomsCount: 1,
+    price: '',
+    roomsCount: '',
     variant: 'CLUB',
-    quantity: 1,
+    quantity: '',
   });
 
   useEffect(() => {
@@ -41,8 +41,7 @@ const CreateOfferPage: React.FC<PropsType> = ({ history }) => {
   }, [apartmentData, history, voucherData]);
 
   const onInputChangeHandler = (event: MyChangeEvents) => {
-    const value = event.target.type === 'number' ? +event.target.value : event.target.value;
-    setOfferFormState((prevState: IOfferFormState) => ({ ...prevState, [event.target.id]: value }));
+    setOfferFormState((prevState: IOfferFormState) => ({ ...prevState, [event.target.id]: event.target.value }));
     event.persist();
   };
 

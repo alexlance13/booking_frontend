@@ -6,10 +6,10 @@ export interface IOfferFormState {
   name: string;
   description: string;
   image: string;
-  price?: number;
-  roomsCount?: number;
+  price?: string;
+  roomsCount?: string;
   variant?: 'CLUB' | 'MUSEUM' | 'RESTAURANT' | 'CINEMA';
-  quantity?: number;
+  quantity?: string;
 }
 export interface IOfferFormStateForEdit {
   _id: string;
@@ -17,10 +17,10 @@ export interface IOfferFormStateForEdit {
   name?: string;
   description?: string;
   image?: string;
-  price?: number;
-  roomsCount?: number;
+  price?: string;
+  roomsCount?: string;
   variant?: 'CLUB' | 'MUSEUM' | 'RESTAURANT' | 'CINEMA';
-  quantity?: number;
+  quantity?: string;
 }
 export interface IOfferTypes {
   APARTMENT: 'apartment';
