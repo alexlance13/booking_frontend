@@ -13,9 +13,9 @@ export const Wrapper = styled.div`
     width: 90%;
   }
   a {
-    color: #03a9f4!important;
+    color: #03a9f4 !important;
     &:hover {
-      color: #81d4fa!important;
+      color: #81d4fa !important;
     }
   }
 `;

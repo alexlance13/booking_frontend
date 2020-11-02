@@ -4,7 +4,7 @@ export const Wrapper = styled.div`
   margin: 20px auto;
   padding: 15px;
   display: grid;
-  grid-template: 60px 1fr/ 1fr;
+  grid-template: 90px 1fr/ 1fr;
   grid-gap: 25px;
   width: 70%;
   @media (max-width: 800px) {
@@ -59,9 +59,9 @@ export const OrderDiv = styled.div`
   display: grid;
   align-items: center;
   grid-template: 1fr / 1fr 1fr 2fr;
+  grid-gap: 30px;
   @media (max-width: 1000px) {
       grid-template: 25px 1fr / 1fr 1fr;
-      grid-gap: 30px;
     }
   }
 `;

@@ -13,7 +13,7 @@ import { IOfferFormStateForEdit, IUser } from 'types';
 const OffersPage: React.FC<PropsType> = ({ user, setStateWhenEdit }) => {
   const { loading, data } = useQuery(GET_ALL_OFFERS_BY_SPECIFIC_SELLER, {
     variables: { id: user._id },
-    onError: handleError, 
+    onError: handleError,
     fetchPolicy: 'network-only',
   });
   if (loading) return <CircleLoader css={'margin: 200px auto;'} size={150} />;

@@ -25,8 +25,8 @@ const SingleVoucherPage: React.FC<PropsType> = ({ user, history, setStateWhenEdi
   });
   const [quantity, setQuantity] = useState(1);
 
-  if(error) {
-    if(error?.message?.substr(0, 4) === 'Cast') {
+  if (error) {
+    if (error?.message?.substr(0, 4) === 'Cast') {
       handleError(new Error('There is no voucher with this id'));
       history.push('/');
     } else handleError(error);
@@ -40,7 +40,7 @@ const SingleVoucherPage: React.FC<PropsType> = ({ user, history, setStateWhenEdi
         showConfirmButton: false,
         timer: 2000,
       });
-      history.push('/orders')
+      history.push('/orders');
     }
   }, [history, mutationData]);
 

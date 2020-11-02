@@ -16,13 +16,13 @@ const ImageUrl: React.FC<PropsType> = ({ onInputChangeHandler, errors, control, 
         defaultValue={offerFormState.image}
         render={(props: any) => (
           <input
-          onChange={(event) => {
-            props.onChange(event);
-            onInputChangeHandler(event);
-            return event;
-          }}
-          id='image'
-          value={offerFormState.image}
+            onChange={(event) => {
+              props.onChange(event);
+              onInputChangeHandler(event);
+              return event;
+            }}
+            id='image'
+            value={offerFormState.image}
             name={props.name}
             type='text'
             className='validate'

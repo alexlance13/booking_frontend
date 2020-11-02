@@ -19,6 +19,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Header = styled.h5`
+  transition: color 0.3s;
   color: blue;
   margin: 10px;
   @media (max-width: 800px) {
@@ -59,6 +60,7 @@ export const ImageDiv = styled.div`
   justify-content: center;
   align-content: center;
   img {
+    transition: filter 1s;
     width: 300px;
     height: 200px;
   }

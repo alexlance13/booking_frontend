@@ -13,13 +13,13 @@ const NameInput: React.FC<PropsType> = ({ onInputChangeHandler, errors, offerFor
           name='name'
           render={(props: any) => (
             <input
-            onChange={(event) => {
-              props.onChange(event);
-              onInputChangeHandler(event);
-              return event;
-            }}
-            id='name'
-            value={offerFormState.name}
+              onChange={(event) => {
+                props.onChange(event);
+                onInputChangeHandler(event);
+                return event;
+              }}
+              id='name'
+              value={offerFormState.name}
               name={props.name}
               type='text'
               className='validate'

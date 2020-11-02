@@ -30,7 +30,7 @@ const AuthPage: React.FC<PropsType> = ({ loginUser, history }) => {
     if (userObject) {
       const { token, user } = userObject;
       loginUser(token, user);
-      history.push('/')
+      history.push('/');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history, loginUser, loginData?.loginUser, registrationData?.createUser]);
@@ -67,7 +67,7 @@ const AuthPage: React.FC<PropsType> = ({ loginUser, history }) => {
       case '/auth/register':
         return <Register onInputChangeHandler={onInputChangeHandler} authFormState={authFormState} onSubmit={onRegister} />;
       default:
-        history.push('/')
+        history.push('/');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onInputChangeHandler, authFormState, onLogin, onRegister, history, window.location.pathname]);

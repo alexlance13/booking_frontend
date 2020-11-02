@@ -23,8 +23,8 @@ const SingleApartmentPage: React.FC<PropsType> = ({ user, history, setStateWhenE
   const { loading: queryLoading, data: queryData, error } = useQuery(GET_APARTMENT_BY_ID, { variables: { id } });
   const [createBooking, { loading: mutationLoading, data: mutationData }] = useMutation(CREATE_BOOKING, { onError: handleError });
 
-  if(error) {
-    if(error?.message?.substr(0, 4) === 'Cast') {
+  if (error) {
+    if (error?.message?.substr(0, 4) === 'Cast') {
       handleError(new Error('There is no apartment with this id'));
       history.push('/');
     } else handleError(error);
@@ -57,7 +57,7 @@ const SingleApartmentPage: React.FC<PropsType> = ({ user, history, setStateWhenE
         showConfirmButton: false,
         timer: 2000,
       });
-      history.push('/orders')
+      history.push('/orders');
     }
   }, [history, mutationData]);
 

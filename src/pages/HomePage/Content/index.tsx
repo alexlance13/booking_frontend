@@ -31,7 +31,11 @@ const Content: React.FC<PropsType> = ({ searchParams, data }) => {
           </li>
           {data?.getAllVouchers.map((voucher: any) => (
             <li key={voucher._id}>
-              <StyledLink to={`/voucher/${voucher._id}`}>
+              <StyledLink
+                disabled={!voucher.quantity}
+                onClick={(e) => !voucher.quantity && e.preventDefault()}
+                to={voucher.quantity ? `/voucher/${voucher._id}` : ''}>
+                {!voucher.quantity && <div id='soldout'>SOLD OUT</div>}
                 <Card name={voucher.name} image={voucher.image}>
                   {voucher.description}
                 </Card>

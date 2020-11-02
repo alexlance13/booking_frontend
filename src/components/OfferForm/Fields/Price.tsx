@@ -16,12 +16,12 @@ const Price: React.FC<PropsType> = ({ onInputChangeHandler, errors, control, Con
         defaultValue={offerFormState.price}
         render={(props: any) => (
           <input
-          onChange={(event) => {
-            props.onChange(event);
-            onInputChangeHandler(event);
-            return event;
-          }}
-          value={offerFormState.price}
+            onChange={(event) => {
+              props.onChange(event);
+              onInputChangeHandler(event);
+              return event;
+            }}
+            value={offerFormState.price}
             name={props.name}
             type='number'
             id='price'

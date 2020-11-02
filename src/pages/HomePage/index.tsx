@@ -67,7 +67,6 @@ const HomePage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log('first');
     trigger(['roomsCount', 'priceTo', 'priceFrom']).then(() => {
       const valid = !Object.keys(errors).length;
       const params = new URLSearchParams(window.location.search);
@@ -125,7 +124,7 @@ const HomePage: React.FC = () => {
 
   const onInputChangeHandler = useCallback(
     ({ name, value }: { name: keyof ISearchParams; value: string | keyof IRelatedParams }) => {
-      let newSearchParams = { ...searchParams, [name]: searchParams[name] === value ? '' : value };
+      setSearchParams((prevState: ISearchParams) => ({ ...prevState, [name]: prevState[name] === value ? '' : value }));
       const params = new URLSearchParams(window.location.search);
       const relatedParams: IRelatedParams = {
         voucher: ['variant'],
@@ -148,14 +147,13 @@ const HomePage: React.FC = () => {
           // change type if params are specific and clear other specific params
           if (specificParams.includes(name)) {
             params.set('type', entity);
-            newSearchParams = { ...newSearchParams, ...Object.fromEntries([...params]) };
+            setSearchParams((prevState: any) => ({ ...prevState, ...Object.fromEntries([...params]) }));
             window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
             relatedParamsMap.splice(i, 1);
             relatedParamsMap.forEach(([entity, specificParams]: [string, string[]]) => deleteParams(specificParams));
           }
         });
       }
-      setSearchParams(newSearchParams);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [deleteParams, errors]

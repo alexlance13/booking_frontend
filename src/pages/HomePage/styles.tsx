@@ -51,11 +51,43 @@ export const SearchParams = styled.span`
 `;
 
 export const StyledLink = styled(Link)`
-  & > div {
+  #soldout {
+    z-index: 2;
+    color: #b71c1c;
+    background: transparent;
+    transition: opacity 1s;
+    opacity: 0;
+    position: absolute;
+    font-size: 80px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    cursor: not-allowed;
+  }
+  &:hover {
+    ${(props: StyledLinkPropsType) =>
+      props.disabled
+        ? `
+        background-color: #f5f5f5; 
+        cursor: not-allowed; 
+        color: grey; 
+          h5 { 
+            color: grey; 
+          }
+          #soldout {  
+            opacity: 1; 
+          }
+          img {
+            filter: grayscale(1);
+          }
+          `
+        : ''}
+  }
+  & > div:last-child {
     box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.5);
-    transition: box-shadow 0.3s linear;
+    transition: box-shadow 0.3s, background-color 0.3s, color 0.3s;
     &:hover {
-      box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.5);
+      ${(props: StyledLinkPropsType) => (props.disabled ? '' : 'box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.5);')}
     }
   }
 `;
@@ -66,3 +98,7 @@ export const Select = styled.select`
   border-bottom: 1px solid #26a69a;
   margin-bottom: 20px;
 `;
+
+interface StyledLinkPropsType {
+  disabled?: boolean;
+}

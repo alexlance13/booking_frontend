@@ -6,9 +6,9 @@ export const Wrapper = styled.div`
   font-weight: 600;
 `;
 export const StyledNavLink = styled(NavLink)`
-  color: #03a9f4!important;
+  color: #03a9f4 !important;
   &:hover {
-    color: #81d4fa!important;
+    color: #81d4fa !important;
   }
   @media (max-width: 1000px) {
     grid-column: 1 / 3;

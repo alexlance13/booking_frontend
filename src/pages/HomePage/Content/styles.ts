@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
+  li {
+    position: relative;
+  }
   @media (max-width: 1167px) {
     width: 85%;
     grid-row-start: 3;

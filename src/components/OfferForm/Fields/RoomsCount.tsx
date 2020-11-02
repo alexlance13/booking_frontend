@@ -5,6 +5,9 @@ const RoomsCount: React.FC<PropsType> = ({ onInputChangeHandler, errors, control
   const rules = isHome ? { min: 1, max: 20 } : { required: true, min: 1, max: 20 };
   return (
     <div className='input-field col s6'>
+      <label className='active' htmlFor='roomsCount'>
+        Rooms Count
+      </label>
       <Controller
         control={control}
         rules={rules}
@@ -26,9 +29,6 @@ const RoomsCount: React.FC<PropsType> = ({ onInputChangeHandler, errors, control
         )}
       />
       {getErrorMessage(errors, 'roomsCount')}
-      <label className='active' htmlFor='roomsCount'>
-        Rooms Count
-      </label>
     </div>
   );
 };

@@ -12,14 +12,14 @@ const Description: React.FC<PropsType> = ({ onInputChangeHandler, errors, contro
         name='description'
         render={(props: any) => (
           <textarea
-          onChange={(event) => {
-            props.onChange(event);
-            onInputChangeHandler(event);
-            return event;
-          }}
-          id='description'
-          value={offerFormState.description}
-          name={props.name}
+            onChange={(event) => {
+              props.onChange(event);
+              onInputChangeHandler(event);
+              return event;
+            }}
+            id='description'
+            value={offerFormState.description}
+            name={props.name}
             className='materialize-textarea'
           />
         )}
