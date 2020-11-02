@@ -55,6 +55,14 @@ const HomePage: React.FC = () => {
   }, [windowWidth]);
 
   useEffect(() => {
+    if (!window.location.search.length) {
+      cancelLastRequest(); // to cancel request from onInputChangeHandler
+      setSearchParams(initialSearchParamsState);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [window.location.search]);
+
+  useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     let newSearchParams: ISearchParams = initialSearchParamsState;
     for (const [key, value] of params) {
