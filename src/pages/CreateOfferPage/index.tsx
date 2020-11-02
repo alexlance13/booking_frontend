@@ -41,7 +41,6 @@ const CreateOfferPage: React.FC<PropsType> = ({ history }) => {
   }, [apartmentData, history, voucherData]);
 
   const onInputChangeHandler = (event: MyChangeEvents) => {
-    console.log(offerFormState);
     const value = event.target.type === 'number' ? +event.target.value : event.target.value;
     setOfferFormState((prevState: IOfferFormState) => ({ ...prevState, [event.target.name]: value }));
     event.persist();

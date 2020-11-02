@@ -14,6 +14,7 @@ const Quantity: React.FC<PropsType> = ({
       <Controller
         control={control}
         defaultValue={quantityValue}
+        availableQuantity={availableQuantity}
         rules={{
           required: true,
           min: 1,

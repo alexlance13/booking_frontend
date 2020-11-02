@@ -1,28 +1,24 @@
 import getErrorMessage from 'helpers/getValidationMessage';
 import React from 'react';
-import { IOfferFormState, IOfferFormStateForEdit } from 'types';
 
-const RoomsCount: React.FC<PropsType> = ({ onInputChangeHandler, errors, control, Controller, offerFormState }) => {
+const RoomsCount: React.FC<PropsType> = ({ onInputChangeHandler, errors, control, Controller, roomsCount, isHome }) => {
+  const rules = isHome ? { min: 1, max: 20 } : { required: true, min: 1, max: 20 };
   return (
     <div className='input-field col s6'>
       <Controller
         control={control}
-        rules={{
-          required: true,
-          min: 1,
-          max: 20,
-        }}
+        rules={rules}
         name='roomsCount'
-        defaultValue={offerFormState.roomsCount}
+        defaultValue={roomsCount}
         render={(props: any) => (
           <input
-          onChange={(event) => {
-            props.onChange(event);
-            onInputChangeHandler(event);
-            return event;
-          }}
-          name={props.name}
-          value={offerFormState.roomsCount}
+            onChange={(event) => {
+              props.onChange(event);
+              onInputChangeHandler(event.target);
+              return event;
+            }}
+            name={props.name}
+            value={roomsCount}
             type='number'
             id='roomsCount'
             className='validate'
@@ -40,10 +36,10 @@ const RoomsCount: React.FC<PropsType> = ({ onInputChangeHandler, errors, control
 export default RoomsCount;
 
 interface PropsType {
-  offerFormState: IOfferFormState | IOfferFormStateForEdit;
-  onInputChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
-
+  onInputChangeHandler: (target: any) => void;
+  roomsCount: any;
   control: any;
   Controller: any;
   errors: any;
+  isHome?: boolean;
 }

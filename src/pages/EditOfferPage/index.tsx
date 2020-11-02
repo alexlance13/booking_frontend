@@ -47,7 +47,6 @@ const EditOfferPage: React.FC<PropsType> = ({ offerFormStore, history }) => {
   }, [apartmentData, history, voucherData]);
 
   const onInputChangeHandler = (event: MyChangeEvents) => {
-    console.log(offerFormState)
     const value = event.target.type === 'number' ? +event.target.value : event.target.value;
     setOfferFormState((prevState: IOfferFormStateForEdit) => ({ ...prevState, [event.target.name]: value }));
     event.persist();
@@ -61,13 +60,11 @@ const EditOfferPage: React.FC<PropsType> = ({ offerFormStore, history }) => {
     ); // remove not updated or empty fields
     if (offerFormState.offerType === OFFER_TYPES.APARTMENT) {
       const apartment = Object.fromEntries(
-        offerFormStateMap.filter(([key, _]) => !['quantity', 'variant', 'offerType', '_id'].includes(key))
+        offerFormStateMap.filter(([key]) => !['quantity', 'variant', 'offerType', '_id'].includes(key))
       );
       editApartment({ variables: { apartment, id } });
     } else if (offerFormState.offerType === OFFER_TYPES.VOUCHER) {
-      const voucher = Object.fromEntries(
-        offerFormStateMap.filter(([key, _]) => !['roomsCount', 'offerType', '_id'].includes(key))
-      );
+      const voucher = Object.fromEntries(offerFormStateMap.filter(([key]) => !['roomsCount', 'offerType', '_id'].includes(key)));
       editVoucher({ variables: { voucher, id } });
     }
   };

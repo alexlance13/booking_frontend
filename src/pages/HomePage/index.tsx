@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import NavBar from 'components/NavBar';
 import { Wrapper, BodyDiv } from './styles';
 import { useLazyQuery } from '@apollo/client';
@@ -11,7 +11,7 @@ import SortingParams from './SortingParams';
 import debounce from 'helpers/debounce';
 import formatDate from 'helpers/formatDate';
 import Content from './Content';
-import Swal from 'sweetalert2';
+import { useForm, Controller } from 'react-hook-form';
 
 let counter = 0;
 
@@ -21,7 +21,7 @@ const initialSearchParamsState = {
   priceFrom: '', // by price from
   priceTo: '', // by price to
   variant: '', // by voucher variant
-  rooms: '', // by rooms number
+  roomsCount: '', // by rooms number
   startDate: '', // by start date
   endDate: '', // by end date
   // ___________sorting
@@ -30,36 +30,23 @@ const initialSearchParamsState = {
 };
 
 const HomePage: React.FC = () => {
+  const [windowWidth, setWindowWidth] = useState(document.body.clientWidth);
   const [selectionRange, setSelectionRange] = useState<IRange>({ startDate: TOMORROW, endDate: TOMORROW });
   const [showSearchParams, setShowSearchParams] = useState(true);
-  const [windowWidth, setWindowWidth] = useState(document.body.clientWidth);
+  const { control, errors, trigger } = useForm({ mode: 'onChange' });
+  const [isFirstRender, setIsFirstRender] = useState(true);
+  const [searchParams, setSearchParams] = useState<ISearchParams>(initialSearchParamsState);
+  const [getAllOffers, { loading, data, error }] = useLazyQuery(GET_ALL_OFFERS, {
+    onError: handleError,
+    fetchPolicy: 'network-only',
+  });
+  const [getAllOffersWithSearchParamsDebounce, cancelLastRequest] = useMemo(() => debounce(getAllOffers, 1000), [getAllOffers]);
+  const [setShowSearchParamsDebounse] = useMemo(() => debounce(setShowSearchParams, 200), [setShowSearchParams]);
 
   useEffect(() => {
     window.addEventListener('resize', () => setWindowWidth(document.body.clientWidth));
+    return window.removeEventListener('resize', () => setWindowWidth(document.body.clientWidth));
   }, []);
-
-  const [searchParams, setSearchParams] = useState<ISearchParams>(initialSearchParamsState);
-
-  const [getAllOffers, { loading, data, error }] = useLazyQuery(GET_ALL_OFFERS, { onError: handleError, fetchPolicy: 'network-only', });
-
-  const getAllOffersWithSearchParamsDebounce = useMemo(() => debounce(getAllOffers, 1000), [getAllOffers]);
-
-  const validErrorMessageDebounce = useMemo(
-    () =>
-      debounce((title: string) => {
-        Swal.fire({
-          icon: 'error',
-          title,
-          showConfirmButton: true,
-          timer: 6000,
-        });
-      }, 2500),
-    []
-  );
-
-  const setShowSearchParamsDebounse = useMemo(() => debounce(setShowSearchParams, 200), [setShowSearchParams]);
-
-  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     if (windowWidth < 1150) setShowSearchParamsDebounse(false);
@@ -69,36 +56,33 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    let newSearchParams: ISearchParams = searchParams;
+    let newSearchParams: ISearchParams = initialSearchParamsState;
     for (const [key, value] of params) {
       newSearchParams = { ...newSearchParams, [key]: value };
       if (key === 'startDate' || key === 'endDate')
         setSelectionRange((prevState: any) => ({ ...prevState, [key]: new Date(value) }));
     }
     setSearchParams(newSearchParams);
-    getAllOffersWithSearchParamsDebounce({ variables: { searchParams: newSearchParams } });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    for (const [key, value] of params) {
-      if (!value) {
-        params.delete(key);
-        window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
+    console.log('first');
+    trigger(['roomsCount', 'priceTo', 'priceFrom']).then(() => {
+      const valid = !Object.keys(errors).length;
+      const params = new URLSearchParams(window.location.search);
+      for (const [key, value] of params) {
+        if (!value) {
+          params.delete(key);
+          window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
+        }
       }
-    }
-    if (formRef?.current?.checkValidity())
-    // counter for request only when start and  end dates were defined
-      if (!(counter % 2)) getAllOffersWithSearchParamsDebounce({ variables: { searchParams } });
-    // } else if (formRef?.current?.checkValidity() === false) validErrorMessageDebounce('Some of your fields is invalid');
+      if ((valid && !(counter % 2)) || isFirstRender) getAllOffersWithSearchParamsDebounce({ variables: { searchParams } });
+      else cancelLastRequest();
+      setIsFirstRender(false);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formRef, getAllOffersWithSearchParamsDebounce, searchParams, validErrorMessageDebounce]);
-
-  useEffect(() => {
-    if (!window.location.search.length) setSearchParams(initialSearchParamsState);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [window.location.search]);
+  }, [searchParams]);
 
   const handleSelect = (ranges: { range1: IRange }) => {
     counter++;
@@ -141,11 +125,11 @@ const HomePage: React.FC = () => {
 
   const onInputChangeHandler = useCallback(
     ({ name, value }: { name: keyof ISearchParams; value: string | keyof IRelatedParams }) => {
-      setSearchParams((prevState: ISearchParams) => ({ ...prevState, [name]: prevState[name] === value ? '' : value }));
+      let newSearchParams = { ...searchParams, [name]: searchParams[name] === value ? '' : value };
       const params = new URLSearchParams(window.location.search);
       const relatedParams: IRelatedParams = {
         voucher: ['variant'],
-        apartment: ['rooms', 'startDate', 'endDate', 'sortByRooms'],
+        apartment: ['roomsCount', 'startDate', 'endDate', 'sortByRooms'],
       };
       if (params.get(name)) {
         if (params.get(name) === value) params.delete(name);
@@ -164,15 +148,17 @@ const HomePage: React.FC = () => {
           // change type if params are specific and clear other specific params
           if (specificParams.includes(name)) {
             params.set('type', entity);
-            setSearchParams((prevState: any) => ({ ...prevState, ...Object.fromEntries([...params]) }));
+            newSearchParams = { ...newSearchParams, ...Object.fromEntries([...params]) };
             window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
             relatedParamsMap.splice(i, 1);
             relatedParamsMap.forEach(([entity, specificParams]: [string, string[]]) => deleteParams(specificParams));
           }
         });
       }
+      setSearchParams(newSearchParams);
     },
-    [deleteParams]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [deleteParams, errors]
   );
 
   return (
@@ -189,7 +175,10 @@ const HomePage: React.FC = () => {
           )}
           {showSearchParams && (
             <FilterParams
-              formRef={formRef}
+              Controller={Controller}
+              control={control}
+              errors={errors}
+              trigger={trigger}
               searchParams={searchParams}
               selectionRange={selectionRange}
               handleSelect={handleSelect}

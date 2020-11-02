@@ -53,7 +53,7 @@ export interface ISearchParams {
   priceFrom: string;
   priceTo: string;
   variant: string;
-  rooms: string | number;
+  roomsCount: string | number;
   startDate: string | Date;
   endDate: string | Date;
   sortByPrice: string;

@@ -12,7 +12,7 @@ const Menu: React.FC<PropsType> = ({ user, logOut }) => {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
   const [windowWidth, setWindowWidth] = useState(document.body.clientWidth);
 
-  const setIsMenuOpenedDebouncer = debounce(setIsMenuOpened, 200);
+  const [setIsMenuOpenedDebouncer] = debounce(setIsMenuOpened, 200);
 
   const ulRef = useRef<HTMLUListElement>(null);
 
@@ -22,7 +22,7 @@ const Menu: React.FC<PropsType> = ({ user, logOut }) => {
   });
 
   useEffect(() => {
-    window.addEventListener('resize', () => setWindowWidth(document.body.clientWidth))
+    window.addEventListener('resize', () => setWindowWidth(document.body.clientWidth));
   }, []);
 
   useEffect(() => {

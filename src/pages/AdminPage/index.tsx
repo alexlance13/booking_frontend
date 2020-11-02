@@ -18,10 +18,12 @@ const AdminPage: React.FC = () => {
   const [searchParams, setSearchParams] = useState({ startDate: TOMORROW, endDate: TOMORROW });
   const [getAllApartments, { loading, data }] = useLazyQuery(GET_ALL_APARTMENTS, { onError: handleError });
 
-  const getAllApartmentsWithSearchParamsDebounce = useMemo(() => debounce(getAllApartments, 500), [getAllApartments]);
+  const [getAllApartmentsWithSearchParamsDebounce] = useMemo(() => debounce(getAllApartments, 500), [getAllApartments]);
 
   useEffect(() => {
-    getAllApartmentsWithSearchParamsDebounce({ variables: { searchParams: { sortByRooms: 'desc', startDate: '' }, admin: true } });
+    getAllApartmentsWithSearchParamsDebounce({
+      variables: { searchParams: { sortByRooms: 'desc', startDate: '' }, admin: true },
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

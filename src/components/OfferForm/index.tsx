@@ -49,7 +49,7 @@ const OfferForm: React.FC<PropsType> = ({ offerFormState, onInputChangeHandler, 
           {offerFormState?.offerType === OFFER_TYPES.APARTMENT && (
             <Fields.RoomsCount
               onInputChangeHandler={onInputChangeHandler}
-              offerFormState={offerFormState}
+              roomsCount={+offerFormState.roomsCount!}
               errors={errors}
               Controller={Controller}
               control={control}
