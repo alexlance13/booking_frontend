@@ -7,6 +7,7 @@ import { IRange, ISearchParams } from 'types';
 import { Wrapper, DatePickerDiv } from './styles';
 import getErrorMessage from 'helpers/getValidationMessage';
 import RoomsCount from 'components/OfferForm/Fields/RoomsCount';
+import { FieldErrors, Controller, Control } from 'react-hook-form';
 
 const FilterParams: React.FC<PropsType> = ({
   searchParams,
@@ -20,8 +21,7 @@ const FilterParams: React.FC<PropsType> = ({
 }) => {
   useEffect(() => {
     trigger(['roomsCount', 'priceTo', 'priceFrom']);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [trigger]);
 
   return (
     <Wrapper>
@@ -128,7 +128,7 @@ const FilterParams: React.FC<PropsType> = ({
       {(!searchParams.type || searchParams.type === OFFER_TYPES.APARTMENT) && (
         <>
           <RoomsCount
-            isHome={true}
+            isHome
             onInputChangeHandler={onInputChangeHandler}
             roomsCount={searchParams.roomsCount}
             errors={errors}
@@ -154,8 +154,8 @@ interface PropsType {
   };
   handleSelect: (ranges: { range1: IRange }) => void;
   onInputChangeHandler: (target: any) => void;
-  Controller: any;
-  control: any;
-  errors: any;
-  trigger: any;
+  Controller: typeof Controller;
+  control: Control;
+  errors: FieldErrors;
+  trigger: (payload?: string | string[]) => Promise<boolean>;
 }

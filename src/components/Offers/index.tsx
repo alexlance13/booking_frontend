@@ -13,7 +13,7 @@ const Offers: React.FC<PropsType> = ({ sellerData, onEdit }) => {
           {sellerData.apartments.map((apartment: any) => (
             <li key={apartment._id}>
               <StyledLink to={`/apartment/${apartment._id}`}>
-                <Card isOffer={true} image={apartment.image} name={apartment.name}>
+                <Card isOffer image={apartment.image} name={apartment.name}>
                   <InfoDiv>
                     <div>{apartment.description}</div>
                     <div className='pencil' onClick={() => onEdit(apartment)}>
@@ -27,7 +27,7 @@ const Offers: React.FC<PropsType> = ({ sellerData, onEdit }) => {
           {sellerData.vouchers.map((voucher: any) => (
             <li key={voucher._id}>
               <StyledLink to={`/voucher/${voucher._id}`}>
-                <Card isOffer={true} image={voucher.image} name={voucher.name}>
+                <Card isOffer image={voucher.image} name={voucher.name}>
                   <InfoDiv>
                     <div>{voucher.description}</div>
                     <div className='pencil' onClick={() => onEdit(voucher)}>

@@ -13,8 +13,6 @@ import formatDate from 'helpers/formatDate';
 import Content from './Content';
 import { useForm, Controller } from 'react-hook-form';
 
-let counter = 0;
-
 const initialSearchParamsState = {
   // __________filter
   type: '', // by type 'apartment' or 'voucher'
@@ -30,6 +28,7 @@ const initialSearchParamsState = {
 };
 
 const HomePage: React.FC = () => {
+  const [isStartDate, setIsStartDate] = useState(true); // handling date range picker
   const [windowWidth, setWindowWidth] = useState(document.body.clientWidth);
   const [selectionRange, setSelectionRange] = useState<IRange>({ startDate: TOMORROW, endDate: TOMORROW });
   const [showSearchParams, setShowSearchParams] = useState(true);
@@ -41,7 +40,7 @@ const HomePage: React.FC = () => {
     fetchPolicy: 'network-only',
   });
   const [getAllOffersWithSearchParamsDebounce, cancelLastRequest] = useMemo(() => debounce(getAllOffers, 1000), [getAllOffers]);
-  const [setShowSearchParamsDebounse, clearSetShowSearchParamsDebounseTimer] = useMemo(() => debounce(setShowSearchParams, 100), [
+  const [setShowSearchParamsDebounce, clearSetShowSearchParamsDebounceTimer] = useMemo(() => debounce(setShowSearchParams, 100), [
     setShowSearchParams,
   ]);
 
@@ -52,29 +51,27 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     window.addEventListener('resize', setWidthOnResize);
     return () => {
-      clearSetShowSearchParamsDebounseTimer();
+      clearSetShowSearchParamsDebounceTimer();
       cancelLastRequest();
       window.removeEventListener('resize', setWidthOnResize);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [cancelLastRequest, clearSetShowSearchParamsDebounceTimer, setWidthOnResize]);
 
   useEffect(() => {
-    if (windowWidth < 1150) setShowSearchParamsDebounse(false);
-    else setShowSearchParamsDebounse(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [windowWidth]);
+    if (windowWidth < 1150) setShowSearchParamsDebounce(false);
+    else setShowSearchParamsDebounce(true);
+  }, [setShowSearchParamsDebounce, windowWidth]);
 
   useEffect(() => {
     if (!window.location.search.length) {
       cancelLastRequest(); // to cancel request from onInputChangeHandler
       setSearchParams(initialSearchParamsState);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [window.location.search]);
+  }, [cancelLastRequest]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+
     let newSearchParams: ISearchParams = initialSearchParamsState;
     for (const [key, value] of params) {
       newSearchParams = { ...newSearchParams, [key]: value };
@@ -82,7 +79,6 @@ const HomePage: React.FC = () => {
         setSelectionRange((prevState: any) => ({ ...prevState, [key]: new Date(value) }));
     }
     setSearchParams(newSearchParams);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -95,15 +91,14 @@ const HomePage: React.FC = () => {
           window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
         }
       }
-      if ((valid && !(counter % 2)) || isFirstRender) getAllOffersWithSearchParamsDebounce({ variables: { searchParams } });
+      if ((valid && isStartDate) || isFirstRender) getAllOffersWithSearchParamsDebounce({ variables: { searchParams } });
       else cancelLastRequest();
       setIsFirstRender(false);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+  }, [cancelLastRequest, errors, getAllOffersWithSearchParamsDebounce, isFirstRender, isStartDate, searchParams, trigger]);
 
   const handleSelect = (ranges: { range1: IRange }) => {
-    counter++;
+    setIsStartDate((prevState: boolean) => !prevState);
     setSelectionRange(ranges.range1);
     const params = new URLSearchParams(window.location.search);
     params.get('type') ? params.set('type', 'apartment') : params.append('type', 'apartment');
@@ -121,25 +116,20 @@ const HomePage: React.FC = () => {
     });
   };
 
-  const deleteParams = useCallback(
-    (names: string[]) => {
-      const params = new URLSearchParams(window.location.search);
-      const newParams: { [name: string]: any } = {};
-      names.forEach((name: string) => {
-        params.delete(name);
-        newParams[name] = '';
-        if (name.substr(name.length - 4, 4) === 'Date')
-          setSelectionRange((prevState: any) => ({ ...prevState, [name]: TOMORROW }));
-      });
-      window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
-      setSearchParams((prev) => ({
-        ...prev,
-        ...newParams,
-      }));
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [window.location, searchParams]
-  );
+  const deleteParams = useCallback((names: string[]) => {
+    const params = new URLSearchParams(window.location.search);
+    const newParams: { [name: string]: any } = {};
+    names.forEach((name: string) => {
+      params.delete(name);
+      newParams[name] = '';
+      if (name.substr(name.length - 4, 4) === 'Date') setSelectionRange((prevState: any) => ({ ...prevState, [name]: TOMORROW }));
+    });
+    window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
+    setSearchParams((prev) => ({
+      ...prev,
+      ...newParams,
+    }));
+  }, []);
 
   const onInputChangeHandler = useCallback(
     ({ name, value }: { name: keyof ISearchParams; value: string | keyof IRelatedParams }) => {
@@ -174,8 +164,7 @@ const HomePage: React.FC = () => {
         });
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [deleteParams, errors]
+    [deleteParams]
   );
 
   return (

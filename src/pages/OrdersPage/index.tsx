@@ -22,8 +22,7 @@ const OrderPage: React.FC<PropsType> = ({ user }) => {
 
   useEffect(() => {
     getOrders({ variables: { id: user._id } });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getOrders, user._id]);
 
   const bookings: IBooking[] = useMemo(
     () =>
@@ -33,16 +32,14 @@ const OrderPage: React.FC<PropsType> = ({ user }) => {
             []
           )
         : data?.getUserById?.bookings,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [data?.getUserById?.apartments, data?.getUserById?.bookings]
+    [data, user.role]
   );
   const orders = useMemo(
     () =>
       user.role === USER_ROLES.SELLER
         ? data?.getUserById?.vouchers.reduce((prevOrders: IOrder[], voucher: IVoucher) => prevOrders.concat(voucher.orders), [])
         : data?.getUserById?.orders,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [data?.getUserById?.vouchers, data?.getUserById?.orders]
+    [data, user.role]
   );
 
   return (

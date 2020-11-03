@@ -1,5 +1,6 @@
 import getErrorMessage from 'helpers/getValidationMessage';
 import React from 'react';
+import { FieldErrors, Controller, Control } from 'react-hook-form';
 
 const RoomsCount: React.FC<PropsType> = ({ onInputChangeHandler, errors, control, Controller, roomsCount, isHome }) => {
   const rules = isHome ? { min: 1, max: 20 } : { required: true, min: 1, max: 20 };
@@ -38,8 +39,8 @@ export default RoomsCount;
 interface PropsType {
   onInputChangeHandler: (target: any) => void;
   roomsCount: any;
-  control: any;
-  Controller: any;
-  errors: any;
+  control: Control;
+  Controller: typeof Controller;
+  errors: FieldErrors;
   isHome?: boolean;
 }

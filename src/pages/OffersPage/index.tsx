@@ -18,20 +18,11 @@ const OffersPage: React.FC<PropsType> = ({ user, setStateWhenEdit, history }) =>
 
   useEffect(() => {
     getAllOffers({ variables: { id: user._id } });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getAllOffers, user._id]);
 
   const onEditHandler = (offer: any) => {
-    const offerForStore = { ...offer };
-    let offerType;
-    if (offer.__typename === 'Apartment') {
-      delete offerForStore.bookings;
-      offerType = OFFER_TYPES.APARTMENT;
-    } else {
-      delete offer.orders;
-      offerType = OFFER_TYPES.VOUCHER;
-    }
-    delete offerForStore.__typename;
+    const offerType = offer.__typename === 'Apartment' ? OFFER_TYPES.APARTMENT : OFFER_TYPES.VOUCHER;
+    const { bookings, orders, __typename, ...offerForStore } = offer;
     setStateWhenEdit({ ...offerForStore, offerType });
     history.push('/editOffer');
   };

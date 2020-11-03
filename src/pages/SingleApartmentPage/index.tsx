@@ -15,8 +15,8 @@ import { setStateWhenEdit } from 'store/actions/offer';
 import formatDate from 'helpers/formatDate';
 import { IOfferFormStateForEdit, IRange, IUser, IBooking } from 'types';
 
-const SingleApartmentPage: React.FC<PropsType> = ({ user, history, setStateWhenEdit }) => {
-  const [id] = useState(window.location.pathname.substr(window.location.pathname.lastIndexOf('/') + 1));
+const SingleApartmentPage: React.FC<PropsType> = ({ user, history, setStateWhenEdit, match }) => {
+  const id = match.params.id;
   const [reservedDates, setReservedDates] = useState<Date[]>([]);
   const [selectionRange, setSelectionRange] = useState<IRange>({ startDate: TOMORROW, endDate: TOMORROW });
 
@@ -25,23 +25,20 @@ const SingleApartmentPage: React.FC<PropsType> = ({ user, history, setStateWhenE
 
   useEffect(() => {
     getApartmentById({ variables: { id } });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (error) {
-    if (error?.message?.substr(0, 4) === 'Cast') {
-      handleError(new Error('There is no apartment with this id'));
-      history.push('/');
-    } else handleError(error);
-  }
+    if (error) {
+      if (error?.message?.substr(0, 4) === 'Cast') {
+        handleError(new Error('There is no apartment with this id'));
+        history.push('/');
+      } else handleError(error);
+    }
+  }, [error, getApartmentById, history, id]);
 
   useEffect(() => {
     if (queryData?.getApartmentById?.bookings?.length) {
-      let reservedDatesArr: Date[] = [];
-      queryData.getApartmentById.bookings.forEach((booking: IBooking) => {
+      let reservedDatesArr: Date[] = queryData.getApartmentById.bookings.reduce((datesArr: Date[], booking: IBooking) => {
         const arrDatesFromRange = getDatesBetween(new Date(+booking.startDate), new Date(+booking.endDate));
-        reservedDatesArr = reservedDatesArr.concat(arrDatesFromRange);
-      });
+        return datesArr.concat(arrDatesFromRange);
+      }, []);
       setReservedDates(reservedDatesArr);
       for (let i = 0; ; i++) {
         const initialDate = addDays(TOMORROW, i);
@@ -83,11 +80,8 @@ const SingleApartmentPage: React.FC<PropsType> = ({ user, history, setStateWhenE
   };
 
   const onEditHandler = () => {
-    const offerForStore = { ...queryData.getApartmentById, offerType: OFFER_TYPES.APARTMENT, _id: id };
-    delete offerForStore.seller;
-    delete offerForStore.__typename;
-    delete offerForStore.bookings;
-    setStateWhenEdit(offerForStore);
+    const { seller, __typename, bookings, ...offerForStore } = queryData?.getApartmentById;
+    setStateWhenEdit({ ...offerForStore, offerType: OFFER_TYPES.APARTMENT, _id: id });
   };
 
   return (
@@ -116,7 +110,7 @@ const SingleApartmentPage: React.FC<PropsType> = ({ user, history, setStateWhenE
               </BuyerDiv>
             )}
             {queryData?.getApartmentById?.seller?._id === user?._id && (
-              <Link onClick={() => onEditHandler()} className='waves-light btn' to='/editOffer'>
+              <Link onClick={onEditHandler} className='waves-light btn' to='/editOffer'>
                 Edit
               </Link>
             )}
@@ -143,5 +137,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(SingleApartmentPage)
 interface PropsType {
   user: IUser;
   history: any;
+  match: any;
   setStateWhenEdit: (offerForStore: IOfferFormStateForEdit) => void;
 }

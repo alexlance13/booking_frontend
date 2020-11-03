@@ -1,6 +1,7 @@
 import getErrorMessage from 'helpers/getValidationMessage';
 import React from 'react';
 import { IOfferFormState, IOfferFormStateForEdit } from 'types';
+import { FieldErrors, Controller, Control } from 'react-hook-form';
 
 const Description: React.FC<PropsType> = ({ onInputChangeHandler, errors, control, Controller, offerFormState }) => {
   return (
@@ -37,8 +38,7 @@ export default Description;
 interface PropsType {
   offerFormState: IOfferFormState | IOfferFormStateForEdit;
   onInputChangeHandler: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-
-  control: any;
-  Controller: any;
-  errors: any;
+  control: Control;
+  Controller: typeof Controller;
+  errors: FieldErrors;
 }

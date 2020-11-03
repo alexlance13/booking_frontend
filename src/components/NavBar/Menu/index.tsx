@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 import { USER_ROLES } from 'global-constants';
 import { GiHamburgerMenu } from 'react-icons/gi';
@@ -12,7 +12,7 @@ const Menu: React.FC<PropsType> = ({ user, logOut }) => {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
   const [windowWidth, setWindowWidth] = useState(document.body.clientWidth);
 
-  const [setIsMenuOpenedDebouncer, clearDebounceTimer] = debounce(setIsMenuOpened, 200);
+  const [setIsMenuOpenedDebouncer, clearDebounceTimer] = useMemo(() => debounce(setIsMenuOpened, 200), [setIsMenuOpened]);
 
   const ulRef = useRef<HTMLUListElement>(null);
 
@@ -31,14 +31,12 @@ const Menu: React.FC<PropsType> = ({ user, logOut }) => {
       clearDebounceTimer();
       window.removeEventListener('resize', setWidthOnResize);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [clearDebounceTimer, setWidthOnResize]);
 
   useEffect(() => {
     if (windowWidth! < 768) setIsMenuOpenedDebouncer(false);
     else setIsMenuOpenedDebouncer(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [windowWidth]);
+  }, [setIsMenuOpenedDebouncer, windowWidth]);
 
   return (
     <Wrapper isMenuOpened={isMenuOpened}>

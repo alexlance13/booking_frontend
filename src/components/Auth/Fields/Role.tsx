@@ -2,6 +2,7 @@ import React from 'react';
 import { Select } from '../styles';
 import getErrorMessage from 'helpers/getValidationMessage';
 import { USER_ROLES } from 'global-constants';
+import { FieldErrors, ValidationRules } from 'react-hook-form';
 
 const Role: React.FC<PropsType> = ({ onInputChangeHandler, errors, register }) => {
   return (
@@ -22,6 +23,6 @@ export default Role;
 
 interface PropsType {
   onInputChangeHandler: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-  register: any;
-  errors: any;
+  register: (validateRules: ValidationRules) => any;
+  errors: FieldErrors;
 }

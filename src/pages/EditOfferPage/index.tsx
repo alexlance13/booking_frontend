@@ -31,8 +31,7 @@ const EditOfferPage: React.FC<PropsType> = ({ offerFormStore, history }) => {
   useEffect(() => {
     if (!offerFormStore._id) history.push('/');
     setOfferFormState(offerFormStore);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [history, offerFormStore]);
 
   useEffect(() => {
     if (apartmentData?.editApartment?._id || voucherData?.editVoucher?._id) {
@@ -54,8 +53,7 @@ const EditOfferPage: React.FC<PropsType> = ({ offerFormStore, history }) => {
 
   const onSubmit = () => {
     const id = offerFormState._id;
-    let offerFormStateMap = Object.entries(offerFormState);
-    offerFormStateMap = offerFormStateMap.filter(
+    const offerFormStateMap = Object.entries(offerFormState).filter(
       ([key, value]) => value !== '' || value !== offerFormStore[key as keyof IOfferFormStateForEdit]
     ); // remove not updated or empty fields
     if (offerFormState.offerType === OFFER_TYPES.APARTMENT) {
@@ -75,12 +73,7 @@ const EditOfferPage: React.FC<PropsType> = ({ offerFormStore, history }) => {
       {apartmentLoading || voucherLoading ? (
         <CircleLoader css={'margin: 200px auto;'} size={150} />
       ) : (
-        <OfferForm
-          offerFormState={offerFormState}
-          onInputChangeHandler={onInputChangeHandler}
-          onSubmit={onSubmit}
-          isEditing={true}
-        />
+        <OfferForm offerFormState={offerFormState} onInputChangeHandler={onInputChangeHandler} onSubmit={onSubmit} isEditing />
       )}
     </Wrapper>
   );

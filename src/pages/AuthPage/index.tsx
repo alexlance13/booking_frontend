@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import NavBar from 'components/NavBar';
 import { Wrapper } from './styles';
 import Register from 'components/Auth/Register';
@@ -32,13 +32,12 @@ const AuthPage: React.FC<PropsType> = ({ loginUser, history }) => {
       loginUser(token, user);
       history.push('/');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [history, loginUser, loginData?.loginUser, registrationData?.createUser]);
+  }, [history, loginData, loginUser, registrationData]);
 
-  const onInputChangeHandler = (event: MyChangeEvents) => {
+  const onInputChangeHandler = useCallback((event: MyChangeEvents) => {
     event.persist();
     setAuthFormState((prevState: IUserForm) => ({ ...prevState, [event.target.id]: event.target.value }));
-  };
+  }, []);
 
   const onRegister = useCallback(
     (userForm: IUserForm) => {
@@ -60,17 +59,19 @@ const AuthPage: React.FC<PropsType> = ({ loginUser, history }) => {
     [logInSubmit]
   );
 
-  let AuthComponent = useMemo(() => {
-    switch (window.location.pathname) {
-      case '/auth/login':
-        return <Login onInputChangeHandler={onInputChangeHandler} authFormState={authFormState} onSubmit={onLogin} />;
-      case '/auth/register':
-        return <Register onInputChangeHandler={onInputChangeHandler} authFormState={authFormState} onSubmit={onRegister} />;
-      default:
-        history.push('/');
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onInputChangeHandler, authFormState, onLogin, onRegister, history, window.location.pathname]);
+  let AuthComponent;
+  switch (window.location.pathname) {
+    case '/auth/login':
+      AuthComponent = <Login onInputChangeHandler={onInputChangeHandler} authFormState={authFormState} onSubmit={onLogin} />;
+      break;
+    case '/auth/register':
+      AuthComponent = (
+        <Register onInputChangeHandler={onInputChangeHandler} authFormState={authFormState} onSubmit={onRegister} />
+      );
+      break;
+    default:
+      history.push('/');
+  }
 
   return (
     <Wrapper>

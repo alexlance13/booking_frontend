@@ -2,6 +2,7 @@ import React from 'react';
 import getErrorMessage from 'helpers/getValidationMessage';
 import { URL_VALIDAITION_REGEXP } from 'global-constants';
 import { IOfferFormState, IOfferFormStateForEdit } from 'types';
+import { FieldErrors, Controller, Control } from 'react-hook-form';
 
 const ImageUrl: React.FC<PropsType> = ({ onInputChangeHandler, errors, control, Controller, offerFormState }) => {
   return (
@@ -43,7 +44,7 @@ interface PropsType {
   offerFormState: IOfferFormState | IOfferFormStateForEdit;
   onInputChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
 
-  control: any;
-  Controller: any;
-  errors: any;
+  control: Control;
+  Controller: typeof Controller;
+  errors: FieldErrors;
 }

@@ -12,26 +12,24 @@ import DatePicker from 'components/DatePicker';
 import { DatePickerDiv } from 'pages/HomePage/FilterParams/styles';
 import formatDate from 'helpers/formatDate';
 
-let counter = 0;
-
 const AdminPage: React.FC = () => {
+  const [isStartDate, setIsStartDate] = useState(true); // handling date range picker
   const [searchParams, setSearchParams] = useState({ startDate: TOMORROW, endDate: TOMORROW });
   const [getAllApartments, { loading, data }] = useLazyQuery(GET_ALL_APARTMENTS, { onError: handleError });
 
-  const [getAllApartmentsWithSearchParamsDebounce] = useMemo(() => debounce(getAllApartments, 500), [getAllApartments]);
+  const [debouncedGetAllApartments] = useMemo(() => debounce(getAllApartments, 500), [getAllApartments]);
 
   useEffect(() => {
-    getAllApartmentsWithSearchParamsDebounce({
+    debouncedGetAllApartments({
       variables: { searchParams: { sortByRooms: 'desc', startDate: '' }, admin: true },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [debouncedGetAllApartments]);
 
   const handleSelect = (ranges: { range1: IRange }) => {
-    counter++;
+    setIsStartDate((prevState: boolean) => !prevState);
     setSearchParams({ startDate: ranges.range1.startDate, endDate: ranges.range1.endDate });
-    if (!(counter % 2))
-      getAllApartmentsWithSearchParamsDebounce({
+    if (isStartDate)
+      debouncedGetAllApartments({
         variables: {
           searchParams: {
             startDate: formatDate(ranges.range1.startDate),
@@ -51,7 +49,7 @@ const AdminPage: React.FC = () => {
       ) : (
         <BodyDiv>
           <DatePickerDiv>
-            <DatePicker handleSelect={handleSelect} selectionRange={searchParams} admin={true} />
+            <DatePicker handleSelect={handleSelect} selectionRange={searchParams} admin />
           </DatePickerDiv>
           <ul>
             <li key='apartmentsHeader'>

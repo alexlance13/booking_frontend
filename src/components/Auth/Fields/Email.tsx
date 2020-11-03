@@ -1,6 +1,7 @@
 import getErrorMessage from 'helpers/getValidationMessage';
 import React from 'react';
 import { EMAIL_VALIDAITION_REGEXP } from 'global-constants';
+import { FieldErrors, ValidationRules } from 'react-hook-form';
 
 const Email: React.FC<PropsType> = ({ onInputChangeHandler, errors, register }) => {
   return (
@@ -29,6 +30,6 @@ export default Email;
 
 interface PropsType {
   onInputChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  register: any;
-  errors: any;
+  register: (validateRules: ValidationRules) => any;
+  errors: FieldErrors;
 }

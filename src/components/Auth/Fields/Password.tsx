@@ -1,5 +1,6 @@
 import React from 'react';
 import getErrorMessage from 'helpers/getValidationMessage';
+import { FieldErrors, ValidationRules } from 'react-hook-form';
 
 const Password: React.FC<PropsType> = ({ onInputChangeHandler, errors, register }) => {
   return (
@@ -24,6 +25,6 @@ export default Password;
 
 interface PropsType {
   onInputChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  register: any;
-  errors: any;
+  register: (validateRules: ValidationRules) => any;
+  errors: FieldErrors;
 }

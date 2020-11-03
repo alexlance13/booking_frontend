@@ -1,5 +1,6 @@
 import getErrorMessage from 'helpers/getValidationMessage';
 import React from 'react';
+import { FieldErrors, Controller, Control } from 'react-hook-form';
 
 const Quantity: React.FC<PropsType> = ({
   onInputChangeHandler,
@@ -55,8 +56,8 @@ interface PropsType {
   quantityValue?: number;
   onInputChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
 
-  control: any;
-  Controller: any;
-  errors: any;
+  control: Control;
+  Controller: typeof Controller;
+  errors: FieldErrors;
   availableQuantity?: number;
 }

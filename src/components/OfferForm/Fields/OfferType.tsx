@@ -2,6 +2,7 @@ import React from 'react';
 import { Select } from '../styles';
 import getErrorMessage from 'helpers/getValidationMessage';
 import { IOfferFormState, IOfferFormStateForEdit } from 'types';
+import { FieldErrors, Controller, Control } from 'react-hook-form';
 
 const OfferType: React.FC<PropsType> = ({ onInputChangeHandler, errors, control, Controller, offerFormState, isEditing }) => {
   return (
@@ -41,8 +42,8 @@ interface PropsType {
   offerFormState: IOfferFormState | IOfferFormStateForEdit;
   onInputChangeHandler: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 
-  control: any;
-  Controller: any;
-  errors: any;
+  control: Control;
+  Controller: typeof Controller;
+  errors: FieldErrors;
   isEditing: boolean;
 }

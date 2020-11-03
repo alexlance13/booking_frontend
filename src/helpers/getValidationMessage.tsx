@@ -1,7 +1,8 @@
 import React from 'react';
 import { Error } from '../components/Auth/styles';
+import { FieldErrors } from 'react-hook-form';
 
-const getErrorMessage = (errors: any, fieldName: string) => {
+const getErrorMessage = (errors: FieldErrors, fieldName: string) => {
   if (!errors[fieldName]) return;
   const errorMessages: any = {
     required: 'This field is required',

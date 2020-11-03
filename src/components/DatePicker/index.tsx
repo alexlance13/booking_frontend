@@ -11,13 +11,13 @@ const DatePicker: React.FC<PropsType> = ({ disabledDates, handleSelect, selectio
   return (
     <Wrapper>
       {admin ? (
-        <DateRange showSelectionPreview={true} maxDate={TOMORROW} ranges={[selectionRange]} onChange={handleSelect} />
+        <DateRange showSelectionPreview maxDate={TOMORROW} ranges={[selectionRange]} onChange={handleSelect} />
       ) : (
         <DateRange
           minDate={TOMORROW}
           maxDate={YEAR_AFTER_TODAY}
           disabledDates={disabledDates}
-          showSelectionPreview={true}
+          showSelectionPreview
           ranges={[selectionRange]}
           onChange={handleSelect}
         />

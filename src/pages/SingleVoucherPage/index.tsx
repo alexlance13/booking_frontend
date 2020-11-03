@@ -13,9 +13,8 @@ import Swal from 'sweetalert2';
 import BuyerDiv from './BuyerDiv';
 import { IOfferFormStateForEdit, IUser } from 'types';
 
-const SingleVoucherPage: React.FC<PropsType> = ({ user, history, setStateWhenEdit }) => {
-  const [id] = useState(window.location.pathname.substr(window.location.pathname.lastIndexOf('/') + 1));
-
+const SingleVoucherPage: React.FC<PropsType> = ({ user, history, setStateWhenEdit, match }) => {
+  const id = match.params.id;
   const [getVoucherById, { loading: queryLoading, data: queryData, error }] = useLazyQuery(GET_VOUCHER_BY_ID, {
     onError: handleError,
   });
@@ -24,15 +23,13 @@ const SingleVoucherPage: React.FC<PropsType> = ({ user, history, setStateWhenEdi
 
   useEffect(() => {
     getVoucherById({ variables: { id } });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (error) {
-    if (error?.message?.substr(0, 4) === 'Cast') {
-      handleError(new Error('There is no voucher with this id'));
-      history.push('/');
-    } else handleError(error);
-  }
+    if (error) {
+      if (error?.message?.substr(0, 4) === 'Cast') {
+        handleError(new Error('There is no voucher with this id'));
+        history.push('/');
+      } else handleError(error);
+    }
+  }, [error, getVoucherById, history, id]);
 
   useEffect(() => {
     if (mutationData?.createOrder._id) {
@@ -47,7 +44,7 @@ const SingleVoucherPage: React.FC<PropsType> = ({ user, history, setStateWhenEdi
   }, [history, mutationData]);
 
   const onInputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value === '') setQuantity(1);
+    if (!event.target.value) setQuantity(1);
     else if (Number(event.target.value)) setQuantity(+event.target.value);
   };
 
@@ -56,10 +53,8 @@ const SingleVoucherPage: React.FC<PropsType> = ({ user, history, setStateWhenEdi
   };
 
   const onEditHandler = () => {
-    const offerForStore = { ...queryData.getVoucherById, offerType: OFFER_TYPES.VOUCHER, _id: id };
-    delete offerForStore.seller;
-    delete offerForStore.__typename;
-    setStateWhenEdit(offerForStore);
+    const { seller, __typename, orders, ...offerForStore } = queryData?.getApartmentById;
+    setStateWhenEdit({ ...offerForStore, offerType: OFFER_TYPES.VOUCHER, _id: id });
   };
 
   return (
@@ -88,7 +83,7 @@ const SingleVoucherPage: React.FC<PropsType> = ({ user, history, setStateWhenEdi
               />
             )}
             {queryData.getVoucherById.seller._id === user._id && (
-              <Link onClick={() => onEditHandler()} className='waves-light btn' to='/editOffer'>
+              <Link onClick={onEditHandler} className='waves-light btn' to='/editOffer'>
                 Edit
               </Link>
             )}
@@ -116,5 +111,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(SingleVoucherPage);
 interface PropsType {
   user: IUser;
   history: any;
+  match: any;
   setStateWhenEdit: (offerForStore: IOfferFormStateForEdit) => void;
 }
