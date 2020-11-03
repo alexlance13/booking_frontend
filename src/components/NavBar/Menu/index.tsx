@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
 import { USER_ROLES } from 'global-constants';
 import { GiHamburgerMenu } from 'react-icons/gi';
@@ -12,9 +12,13 @@ const Menu: React.FC<PropsType> = ({ user, logOut }) => {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
   const [windowWidth, setWindowWidth] = useState(document.body.clientWidth);
 
-  const [setIsMenuOpenedDebouncer] = debounce(setIsMenuOpened, 200);
+  const [setIsMenuOpenedDebouncer, clearDebounceTimer] = debounce(setIsMenuOpened, 200);
 
   const ulRef = useRef<HTMLUListElement>(null);
+
+  const setWidthOnResize = useCallback(() => {
+    setWindowWidth(document.body.clientWidth);
+  }, []);
 
   useOutsideClick(ulRef, () => {
     if (!isMenuOpened) return;
@@ -22,7 +26,12 @@ const Menu: React.FC<PropsType> = ({ user, logOut }) => {
   });
 
   useEffect(() => {
-    window.addEventListener('resize', () => setWindowWidth(document.body.clientWidth));
+    window.addEventListener('resize', setWidthOnResize);
+    return () => {
+      clearDebounceTimer();
+      window.removeEventListener('resize', setWidthOnResize);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

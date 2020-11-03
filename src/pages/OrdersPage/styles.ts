@@ -26,7 +26,7 @@ export const Header = styled.span`
   display: block;
   padding: 40px;
   text-align: center;
-  @media (max-width: 800px) {
+  @media (max-width: 870px) {
     padding: 20px;
     font-size: 20px;
   }

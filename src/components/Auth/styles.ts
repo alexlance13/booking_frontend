@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   input:-webkit-autofill:active {
     transition: background-color 5000s ease-in-out 0s;
   }
-  @media (max-width: 800px) {
+  @media (max-width: 870px) {
     width: 90%;
   }
   a {

@@ -41,11 +41,22 @@ const HomePage: React.FC = () => {
     fetchPolicy: 'network-only',
   });
   const [getAllOffersWithSearchParamsDebounce, cancelLastRequest] = useMemo(() => debounce(getAllOffers, 1000), [getAllOffers]);
-  const [setShowSearchParamsDebounse] = useMemo(() => debounce(setShowSearchParams, 200), [setShowSearchParams]);
+  const [setShowSearchParamsDebounse, clearSetShowSearchParamsDebounseTimer] = useMemo(() => debounce(setShowSearchParams, 100), [
+    setShowSearchParams,
+  ]);
+
+  const setWidthOnResize = useCallback(() => {
+    setWindowWidth(document.body.clientWidth);
+  }, []);
 
   useEffect(() => {
-    window.addEventListener('resize', () => setWindowWidth(document.body.clientWidth));
-    return window.removeEventListener('resize', () => setWindowWidth(document.body.clientWidth));
+    window.addEventListener('resize', setWidthOnResize);
+    return () => {
+      clearSetShowSearchParamsDebounseTimer();
+      cancelLastRequest();
+      window.removeEventListener('resize', setWidthOnResize);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

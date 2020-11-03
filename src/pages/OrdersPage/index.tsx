@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import NavBar from 'components/NavBar';
 import { Wrapper, Header } from './styles';
 import { connect } from 'react-redux';
-import { useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import {
   GET_ALL_ORDERS_AND_BOOKINGS_FROM_A_SPECIFIC_SELLER,
   GET_ALL_ORDERS_AND_BOOKINGS_FROM_A_SPECIFIC_BUYER,
@@ -18,7 +18,13 @@ const OrderPage: React.FC<PropsType> = ({ user }) => {
     user.role === USER_ROLES.SELLER
       ? GET_ALL_ORDERS_AND_BOOKINGS_FROM_A_SPECIFIC_SELLER
       : GET_ALL_ORDERS_AND_BOOKINGS_FROM_A_SPECIFIC_BUYER;
-  const { loading, data } = useQuery(query, { variables: { id: user._id }, fetchPolicy: 'network-only', onError: handleError });
+  const [getOrders, { loading, data }] = useLazyQuery(query, { fetchPolicy: 'network-only', onError: handleError });
+
+  useEffect(() => {
+    getOrders({ variables: { id: user._id } });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const bookings: IBooking[] = useMemo(
     () =>
       user.role === USER_ROLES.SELLER

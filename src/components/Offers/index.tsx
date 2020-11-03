@@ -1,7 +1,6 @@
 import Card from 'components/Card';
 import React from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
 import { IApartment, IOfferFormStateForEdit, IVoucher } from 'types';
 import { Wrapper, Header, InfoDiv, StyledLink } from './styles';
 
@@ -9,17 +8,17 @@ const Offers: React.FC<PropsType> = ({ sellerData, onEdit }) => {
   return (
     <Wrapper>
       <Header>Your offers</Header>
-      {sellerData.apartments.length || sellerData.vouchers.length ? (
+      {sellerData?.apartments?.length || sellerData?.vouchers?.length ? (
         <ul>
           {sellerData.apartments.map((apartment: any) => (
             <li key={apartment._id}>
               <StyledLink to={`/apartment/${apartment._id}`}>
-                <Card image={apartment.image} name={apartment.name}>
+                <Card isOffer={true} image={apartment.image} name={apartment.name}>
                   <InfoDiv>
-                    <p>{apartment.description}</p>
-                    <Link to='/editOffer' onClick={() => onEdit(apartment)}>
+                    <div>{apartment.description}</div>
+                    <div className='pencil' onClick={() => onEdit(apartment)}>
                       <FaPencilAlt />
-                    </Link>
+                    </div>
                   </InfoDiv>
                 </Card>
               </StyledLink>
@@ -28,12 +27,12 @@ const Offers: React.FC<PropsType> = ({ sellerData, onEdit }) => {
           {sellerData.vouchers.map((voucher: any) => (
             <li key={voucher._id}>
               <StyledLink to={`/voucher/${voucher._id}`}>
-                <Card image={voucher.image} name={voucher.name}>
+                <Card isOffer={true} image={voucher.image} name={voucher.name}>
                   <InfoDiv>
-                    <p>{voucher.description}</p>
-                    <Link to='/editOffer' onClick={() => onEdit(voucher)}>
+                    <div>{voucher.description}</div>
+                    <div className='pencil' onClick={() => onEdit(voucher)}>
                       <FaPencilAlt />
-                    </Link>
+                    </div>
                   </InfoDiv>
                 </Card>
               </StyledLink>

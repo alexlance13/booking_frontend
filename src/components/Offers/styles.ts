@@ -25,16 +25,14 @@ export const Header = styled.span`
   text-align: center;
 `;
 export const InfoDiv = styled.div`
+  height: 14em;
   display: grid;
   grid-template: 1fr / 1fr 40px;
-  a {
+  .pencil {
     position: relative;
     top: 50px;
     justify-self: center;
     height: 15px;
-  }
-  p {
-    margin: 10px;
   }
 `;
 

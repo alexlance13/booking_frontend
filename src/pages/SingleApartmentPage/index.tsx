@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { GET_APARTMENT_BY_ID, USER_ROLES, CREATE_BOOKING, TOMORROW, OFFER_TYPES } from 'global-constants';
 import { CircleLoader } from 'react-spinners';
 import { Wrapper, BuyerDiv, StyledNavLink } from './styles';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation, useLazyQuery } from '@apollo/client';
 import SingleOffer from 'components/SingleOffer';
 import handleError from 'helpers/handleError';
 import DatePicker from 'components/DatePicker';
@@ -20,8 +20,13 @@ const SingleApartmentPage: React.FC<PropsType> = ({ user, history, setStateWhenE
   const [reservedDates, setReservedDates] = useState<Date[]>([]);
   const [selectionRange, setSelectionRange] = useState<IRange>({ startDate: TOMORROW, endDate: TOMORROW });
 
-  const { loading: queryLoading, data: queryData, error } = useQuery(GET_APARTMENT_BY_ID, { variables: { id } });
+  const [getApartmentById, { loading: queryLoading, data: queryData, error }] = useLazyQuery(GET_APARTMENT_BY_ID);
   const [createBooking, { loading: mutationLoading, data: mutationData }] = useMutation(CREATE_BOOKING, { onError: handleError });
+
+  useEffect(() => {
+    getApartmentById({ variables: { id } });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (error) {
     if (error?.message?.substr(0, 4) === 'Cast') {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Wrapper, InfoDiv, Header, ImageDiv } from './styles';
 
-const Card: React.FC<PropsType> = ({ image, name, children }) => {
+const Card: React.FC<PropsType> = ({ image, name, children, isOffer }) => {
   return (
     <Wrapper>
       <ImageDiv>
@@ -9,7 +9,7 @@ const Card: React.FC<PropsType> = ({ image, name, children }) => {
       </ImageDiv>
       <InfoDiv>
         <Header>{name}</Header>
-        <div>{children}</div>
+        <div className={isOffer ? 'description' : ''}>{children}</div>
       </InfoDiv>
     </Wrapper>
   );
@@ -21,4 +21,5 @@ interface PropsType {
   name: string;
   image: string;
   children: any;
+  isOffer?: boolean;
 }

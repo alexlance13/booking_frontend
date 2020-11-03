@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   grid-template: 90px 1fr/ 1fr;
   grid-gap: 25px;
   width: 70%;
-  @media (max-width: 800px) {
+  @media (max-width: 870px) {
     width: 90%;
     grid-gap: 5px;
   }
@@ -29,7 +29,7 @@ export const Header = styled.span`
 
 export const InfoDiv = styled.div`
   display: grid;
-  grid-template: repeat(1fr, 3) / 1fr;
+  grid-template: repeat(3, 1fr) / 1fr;
   grid-gap: 15px;
   margin: 0 auto;
   span {
@@ -38,7 +38,7 @@ export const InfoDiv = styled.div`
     color: #00897b;
     align-self: center;
   }
-  @media (max-width: 800px) {
+  @media (max-width: 870px) {
     grid-gap: 5px;
     span {
       grid-template: 1fr 1fr / 1fr 1fr;
@@ -61,7 +61,6 @@ export const OrderDiv = styled.div`
   grid-template: 1fr / 1fr 1fr 2fr;
   grid-gap: 30px;
   @media (max-width: 1000px) {
-      grid-template: 25px 1fr / 1fr 1fr;
-    }
+    grid-template: 25px 1fr / 1fr 1fr;
   }
 `;

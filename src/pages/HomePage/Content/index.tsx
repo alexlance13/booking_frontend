@@ -16,7 +16,7 @@ const Content: React.FC<PropsType> = ({ searchParams, data }) => {
           {data?.getAllApartments.map((apartment: any) => (
             <li key={apartment._id}>
               <StyledLink to={`/apartment/${apartment._id}`}>
-                <Card name={apartment.name} image={apartment.image}>
+                <Card isOffer={true} name={apartment.name} image={apartment.image}>
                   {apartment.description}
                 </Card>
               </StyledLink>
@@ -36,7 +36,7 @@ const Content: React.FC<PropsType> = ({ searchParams, data }) => {
                 onClick={(e) => !voucher.quantity && e.preventDefault()}
                 to={voucher.quantity ? `/voucher/${voucher._id}` : ''}>
                 {!voucher.quantity && <div id='soldout'>SOLD OUT</div>}
-                <Card name={voucher.name} image={voucher.image}>
+                <Card isOffer={true} name={voucher.name} image={voucher.image}>
                   {voucher.description}
                 </Card>
               </StyledLink>

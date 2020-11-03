@@ -13,7 +13,7 @@ export const BodyDiv = styled.div`
   grid-template: 1fr / 1fr 4fr 1fr;
   grid-gap: 20px;
   justify-items: center;
-  @media (max-width: 1300px) {
+  @media (max-width: 1400px) {
     width: 98%;
   }
   @media (max-width: 1167px) {
@@ -45,7 +45,7 @@ export const SearchParams = styled.span`
   display: block;
   padding: 20px;
   text-align: center;
-  @media (max-width: 800px) {
+  @media (max-width: 870px) {
     padding: 20px 0;
   }
 `;

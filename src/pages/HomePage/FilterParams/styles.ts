@@ -31,7 +31,7 @@ export const DatePickerDiv = styled.div`
       align-self: center;
     }
   }
-  @media (max-width: 800px) {
+  @media (max-width: 870px) {
     & .rdrCalendarWrapper,
     & .rdrDateRangeWrapper,
     & .rdrMonth {

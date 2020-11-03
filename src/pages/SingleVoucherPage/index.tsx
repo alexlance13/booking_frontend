@@ -5,7 +5,7 @@ import { GET_VOUCHER_BY_ID, USER_ROLES, CREATE_ORDER, OFFER_TYPES } from 'global
 import { CircleLoader } from 'react-spinners';
 import handleError from 'helpers/handleError';
 import { Wrapper, StyledNavLink } from './styles';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation, useLazyQuery } from '@apollo/client';
 import SingleOffer from 'components/SingleOffer';
 import { Link } from 'react-router-dom';
 import { setStateWhenEdit } from 'store/actions/offer';
@@ -16,14 +16,16 @@ import { IOfferFormStateForEdit, IUser } from 'types';
 const SingleVoucherPage: React.FC<PropsType> = ({ user, history, setStateWhenEdit }) => {
   const [id] = useState(window.location.pathname.substr(window.location.pathname.lastIndexOf('/') + 1));
 
-  const { loading: queryLoading, data: queryData, error } = useQuery(GET_VOUCHER_BY_ID, {
-    variables: { id },
+  const [getVoucherById, { loading: queryLoading, data: queryData, error }] = useLazyQuery(GET_VOUCHER_BY_ID, {
     onError: handleError,
   });
-  const [createOrder, { loading: mutationLoading, data: mutationData }] = useMutation(CREATE_ORDER, {
-    onError: handleError,
-  });
+  const [createOrder, { loading: mutationLoading, data: mutationData }] = useMutation(CREATE_ORDER, { onError: handleError });
   const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    getVoucherById({ variables: { id } });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (error) {
     if (error?.message?.substr(0, 4) === 'Cast') {

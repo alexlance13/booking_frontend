@@ -1,22 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Offers from 'components/Offers';
 import NavBar from 'components/NavBar';
 import { Wrapper } from './styles';
 import { connect } from 'react-redux';
-import { useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import { GET_ALL_OFFERS_BY_SPECIFIC_SELLER, OFFER_TYPES } from 'global-constants';
 import { CircleLoader } from 'react-spinners';
 import handleError from 'helpers/handleError';
 import { setStateWhenEdit } from 'store/actions/offer';
 import { IOfferFormStateForEdit, IUser } from 'types';
 
-const OffersPage: React.FC<PropsType> = ({ user, setStateWhenEdit }) => {
-  const { loading, data } = useQuery(GET_ALL_OFFERS_BY_SPECIFIC_SELLER, {
-    variables: { id: user._id },
+const OffersPage: React.FC<PropsType> = ({ user, setStateWhenEdit, history }) => {
+  const [getAllOffers, { loading, data }] = useLazyQuery(GET_ALL_OFFERS_BY_SPECIFIC_SELLER, {
     onError: handleError,
     fetchPolicy: 'network-only',
   });
-  if (loading) return <CircleLoader css={'margin: 200px auto;'} size={150} />;
+
+  useEffect(() => {
+    getAllOffers({ variables: { id: user._id } });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onEditHandler = (offer: any) => {
     const offerForStore = { ...offer };
@@ -30,12 +33,17 @@ const OffersPage: React.FC<PropsType> = ({ user, setStateWhenEdit }) => {
     }
     delete offerForStore.__typename;
     setStateWhenEdit({ ...offerForStore, offerType });
+    history.push('/editOffer');
   };
 
   return (
     <Wrapper>
       <NavBar />
-      <Offers sellerData={data.getUserById} onEdit={onEditHandler} />
+      {loading ? (
+        <CircleLoader css={'margin: 200px auto;'} size={150} />
+      ) : (
+        <Offers sellerData={data?.getUserById} onEdit={onEditHandler} />
+      )}
     </Wrapper>
   );
 };
@@ -56,5 +64,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(OffersPage);
 
 interface PropsType {
   user: IUser;
+  history: any;
   setStateWhenEdit: (offerFormStore: IOfferFormStateForEdit) => void;
 }

@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   a:hover {
     color: #00897b;
   }
-  @media (max-width: 800px) {
+  @media (max-width: 870px) {
     grid-template: 1fr 1fr / 1fr;
     height: 450px;
     grid-gap: 5px;
@@ -22,7 +22,12 @@ export const Header = styled.h5`
   transition: color 0.3s;
   color: blue;
   margin: 10px;
-  @media (max-width: 800px) {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+  height: 1em;
+  @media (max-width: 870px) {
     text-align: center;
     font-size: 20px;
   }
@@ -33,7 +38,7 @@ export const Header = styled.h5`
 
 export const InfoDiv = styled.div`
   overflow: hidden;
-  height: 210px;
+  height: 13.5em;
   margin: 0 auto;
   span {
     font-size: 18px;
@@ -41,8 +46,21 @@ export const InfoDiv = styled.div`
     color: #00897b;
     margin: 6px;
   }
-  @media (max-width: 800px) {
-    height: 177px;
+  width: 100%;
+  .description:after {
+    content: '';
+    text-align: right;
+    position: absolute;
+    bottom: 2em;
+    right: 1px;
+    height: 2em;
+    width: 60%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 95%);
+  }
+  @media (max-width: 1200px) {
+    .description:after {
+      bottom: 2.5em;
+    }
   }
   @media (max-width: 1000px) {
     span {
@@ -50,8 +68,18 @@ export const InfoDiv = styled.div`
       margin: 3px;
     }
   }
+  @media (max-width: 870px) {
+    height: 12em;
+    .description:after {
+      bottom: 1px;
+    }
+  }
   @media (max-width: 480px) {
-    height: 210px;
+    height: 15em;
+    .description:after {
+      bottom: 1em;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 70%);
+    }
   }
 `;
 
@@ -70,7 +98,7 @@ export const ImageDiv = styled.div`
       height: 180px;
     }
   }
-  @media (max-width: 800px) {
+  @media (max-width: 870px) {
     grid-row: 1;
     img {
       width: 350px;
