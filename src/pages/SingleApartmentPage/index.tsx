@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import NavBar from 'components/NavBar';
 import { connect } from 'react-redux';
 import { GET_APARTMENT_BY_ID, USER_ROLES, CREATE_BOOKING, TOMORROW, OFFER_TYPES } from 'global-constants';
@@ -16,7 +16,7 @@ import formatDate from 'helpers/formatDate';
 import { IOfferFormStateForEdit, IRange, IUser, IBooking } from 'types';
 
 const SingleApartmentPage: React.FC<PropsType> = ({ user, history, setStateWhenEdit, match }) => {
-  const id = match.params.id;
+  const id = useMemo(() => match.params.id, [match.params.id]);
   const [reservedDates, setReservedDates] = useState<Date[]>([]);
   const [selectionRange, setSelectionRange] = useState<IRange>({ startDate: TOMORROW, endDate: TOMORROW });
 

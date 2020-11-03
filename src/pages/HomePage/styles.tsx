@@ -59,6 +59,7 @@ export const StyledLink = styled(Link)`
     opacity: 0;
     position: absolute;
     font-size: 80px;
+    width: 400px;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -88,6 +89,12 @@ export const StyledLink = styled(Link)`
     transition: box-shadow 0.3s, background-color 0.3s, color 0.3s;
     &:hover {
       ${(props: StyledLinkPropsType) => (props.disabled ? '' : 'box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.5);')}
+    }
+  }
+  @media (max-width: 870px) {
+    #soldout {
+      font-size: 50px;
+      width: 250px;
     }
   }
 `;

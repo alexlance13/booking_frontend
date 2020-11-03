@@ -8,14 +8,16 @@ import { IUser } from 'types';
 
 const NavBar: React.FC<PropsType> = ({ logOut, user }) => {
   return (
-    <nav>
-      <Wrapper className='nav-wrapper'>
-        <NavLink exact to='/' className='brand-logo'>
-          Booking
-        </NavLink>
-        <Menu logOut={logOut} user={user} />
-      </Wrapper>
-    </nav>
+    <div className='navbar-fixed'>
+      <nav>
+        <Wrapper className='nav-wrapper'>
+          <NavLink exact to='/' className='brand-logo'>
+            Booking
+          </NavLink>
+          <Menu logOut={logOut} user={user} />
+        </Wrapper>
+      </nav>
+    </div>
   );
 };
 

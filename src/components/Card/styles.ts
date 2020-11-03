@@ -20,6 +20,7 @@ export const Wrapper = styled.div`
 
 export const Header = styled.h5`
   transition: color 0.3s;
+  line-height: 80%;
   color: blue;
   margin: 10px;
   overflow: hidden;

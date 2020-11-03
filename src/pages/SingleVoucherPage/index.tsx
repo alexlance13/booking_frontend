@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import NavBar from 'components/NavBar';
 import { connect } from 'react-redux';
 import { GET_VOUCHER_BY_ID, USER_ROLES, CREATE_ORDER, OFFER_TYPES } from 'global-constants';
@@ -14,7 +14,7 @@ import BuyerDiv from './BuyerDiv';
 import { IOfferFormStateForEdit, IUser } from 'types';
 
 const SingleVoucherPage: React.FC<PropsType> = ({ user, history, setStateWhenEdit, match }) => {
-  const id = match.params.id;
+  const id = useMemo(() => match.params.id, [match.params.id]);
   const [getVoucherById, { loading: queryLoading, data: queryData, error }] = useLazyQuery(GET_VOUCHER_BY_ID, {
     onError: handleError,
   });
