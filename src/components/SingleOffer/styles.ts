@@ -29,7 +29,7 @@ export const Header = styled.span`
 
 export const InfoDiv = styled.div`
   display: grid;
-  grid-template: repeat(3, 1fr) / 1fr;
+  grid-template: repeat(3, auto) / 1fr;
   grid-gap: 15px;
   margin: 0 auto;
   span {
